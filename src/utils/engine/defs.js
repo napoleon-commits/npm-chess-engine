@@ -131,3 +131,14 @@ export function RAND_32() {
 export const PieceKeys = new Array(14 * 120);
 export const SideKey = [];
 export const CastleKeys = new Array(16);
+
+export const Sq120ToSq64 = new Array(BRD_SQ_NUM);
+export const Sq64ToSq120 = new Array(64);
+
+export function SQ64(sq120) {
+  return Sq120ToSq64[(sq120)];
+}
+
+export function SQ120(sq64) {
+  return Sq64ToSq120[(sq64)];
+}
