@@ -1,6 +1,7 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=","|=","&"] }] */
 
 import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar, PieceCol, PieceVal } from './defs';
+import { PrSq } from './io';
 
 export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
@@ -91,6 +92,17 @@ export function ResetBoard() {
   GameBoard.moveListStart[GameBoard.ply] = 0;
 }
 
+export function PrintPieceLists() {
+  let piece;
+  let pceNum;
+  for (piece = PIECES.wP; piece <= PIECES.bK; piece += 1) {
+    for (pceNum = 0; pceNum < GameBoard.pceNum[piece]; pceNum += 1) {
+      // eslint-disable-next-line
+      console.log(`Piece ${PceChar[piece]} on ${PrSq(GameBoard.pList[PCEINDEX(piece, pceNum)])}`);
+    }
+  }
+}
+
 export function UpdateListsMaterial() {
   let piece;
   let sq;
@@ -113,8 +125,6 @@ export function UpdateListsMaterial() {
     sq = SQ120(index);
     piece = GameBoard.pieces[sq];
     if (piece !== PIECES.EMPTY) {
-      // eslint-disable-next-line
-			console.log('piece ' + piece + ' on ' + sq);
       colour = PieceCol[piece];
 
       GameBoard.material[colour] += PieceVal[piece];
@@ -123,6 +133,7 @@ export function UpdateListsMaterial() {
       GameBoard.pceNum[piece] += 1;
     }
   }
+  PrintPieceLists();
 }
 
 export function ParseFen(fen) {
