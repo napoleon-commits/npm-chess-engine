@@ -153,3 +153,8 @@ export const PceChar = '.PNBRQKpnbrqk';
 export const SideChar = 'wb-';
 export const RankChar = '12345678';
 export const FileChar = 'abcdefgh';
+
+export const KnDir = [-8, -19, -21, -12, 8, 19, 21, 12];
+export const RkDir = [-1, -10, 1, 10];
+export const BiDir = [-9, -11, 11, 9];
+export const KiDir = [-1, -10, 1, 10, -9, -11, 11, 9];
