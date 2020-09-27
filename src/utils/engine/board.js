@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=","|=","&"] }] */
 
-import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar, PieceCol, PieceVal } from './defs';
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar, PieceCol, PieceVal, BOOL } from './defs';
 import { PrSq } from './io';
 
 export const GameBoard = {
@@ -136,6 +136,23 @@ export function UpdateListsMaterial() {
   PrintPieceLists();
 }
 
+export function SqAttacked(sq, side) {
+  // eslint-disable-next-line
+  let pce;
+  // eslint-disable-next-line
+  let t_sq;
+  // eslint-disable-next-line
+	let index;
+
+  if (side === COLOURS.WHITE) {
+    if (GameBoard.pieces[sq - 11] === PIECES.wP || GameBoard.pieces[sq - 9] === PIECES.wP) {
+      return BOOL.TRUE;
+    }
+  } else if (GameBoard.pieces[sq + 11] === PIECES.bP || GameBoard.pieces[sq + 9] === PIECES.bP) {
+    return BOOL.TRUE;
+  }
+}
+
 export function ParseFen(fen) {
   ResetBoard();
   let rank = RANKS.RANK_8;
@@ -224,6 +241,7 @@ export function ParseFen(fen) {
 
   GameBoard.posKey = GeneratePosKey();
   UpdateListsMaterial();
+  SqAttacked(21, 0);
 }
 
 export function PrintBoard() {
