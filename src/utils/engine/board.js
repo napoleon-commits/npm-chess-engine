@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=","|=","&"] }] */
 
-import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar } from './defs';
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar, PieceCol, PieceVal } from './defs';
 
 export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
@@ -17,6 +17,17 @@ export const GameBoard = {
   moveScores: new Array(MAXDEPTH * MAXPOSITIONMOVES),
   moveListStart: new Array(MAXDEPTH),
 };
+
+/*
+  pce * 10 + pceNum
+
+  pceNum[bP] = 4;
+
+  for(num = 0 to 3) {
+  bP * 10 + num;   70,71,72,73
+  sq = pList[70]....
+  }
+*/
 
 export function PCEINDEX(pce, pceNum) {
   return ((pce * 10) + pceNum);
@@ -78,6 +89,40 @@ export function ResetBoard() {
   GameBoard.castlePerm = 0;
   GameBoard.posKey = 0;
   GameBoard.moveListStart[GameBoard.ply] = 0;
+}
+
+export function UpdateListsMaterial() {
+  let piece;
+  let sq;
+  let index;
+  let colour;
+
+  for (index = 0; index < 14 * 120; index += 1) {
+    GameBoard.pList[index] = PIECES.EMPTY;
+  }
+
+  for (index = 0; index < 2; index += 1) {
+    GameBoard.material[index] = 0;
+  }
+
+  for (index = 0; index < 13; index += 1) {
+    GameBoard.pceNum[index] = 0;
+  }
+
+  for (index = 0; index < 64; index += 1) {
+    sq = SQ120(index);
+    piece = GameBoard.pieces[sq];
+    if (piece !== PIECES.EMPTY) {
+      // eslint-disable-next-line
+			console.log('piece ' + piece + ' on ' + sq);
+      colour = PieceCol[piece];
+
+      GameBoard.material[colour] += PieceVal[piece];
+
+      GameBoard.pList[PCEINDEX(piece, GameBoard.pceNum[piece])] = sq;
+      GameBoard.pceNum[piece] += 1;
+    }
+  }
 }
 
 export function ParseFen(fen) {
@@ -167,6 +212,7 @@ export function ParseFen(fen) {
   }
 
   GameBoard.posKey = GeneratePosKey();
+  UpdateListsMaterial();
 }
 
 export function PrintBoard() {
