@@ -14,10 +14,20 @@
 </template>
 
 <script>
+import { InitFilesRanksBrd } from '../utils/engine/main';
+
 export default {
   mounted() {
-    //   eslint-disable-next-line
-    console.log('mounted() called');
+    this.init();
+    // eslint-disable-next-line
+    console.log("Main Init Called");	
+  },
+  methods: {
+    init() {
+      // eslint-disable-next-line
+        console.log("init() called");
+      InitFilesRanksBrd();
+    },
   },
 };
 </script>

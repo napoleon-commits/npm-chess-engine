@@ -1,4 +1,4 @@
-const PIECES = {
+export const PIECES = {
   EMPTY: 0,
   wP: 1,
   wN: 2,
@@ -14,9 +14,9 @@ const PIECES = {
   bK: 12,
 };
 
-const BRD_SQ_NUM = 120;
+export const BRD_SQ_NUM = 120;
 
-const FILES = {
+export const FILES = {
   FILE_A: 0,
   FILE_B: 1,
   FILE_C: 2,
@@ -28,7 +28,7 @@ const FILES = {
   FILE_NONE: 8,
 };
 
-const RANKS = {
+export const RANKS = {
   RANK_1: 0,
   RANK_2: 1,
   RANK_3: 2,
@@ -40,9 +40,9 @@ const RANKS = {
   RANK_NONE: 8,
 };
 
-const COLOURS = { WHITE: 0, BLACK: 1, BOTH: 2 };
+export const COLOURS = { WHITE: 0, BLACK: 1, BOTH: 2 };
 
-const SQUARES = {
+export const SQUARES = {
   A1: 21,
   B1: 22,
   C1: 23,
@@ -63,4 +63,11 @@ const SQUARES = {
   OFFBOARD: 100,
 };
 
-const BOOL = { FALSE: 0, TRUE: 1 };
+export const BOOL = { FALSE: 0, TRUE: 1 };
+
+export const FilesBrd = new Array(BRD_SQ_NUM);
+export const RanksBrd = new Array(BRD_SQ_NUM);
+
+export function FR2SQ(f, r) {
+  return ((21 + (f)) + ((r) * 10));
+}
