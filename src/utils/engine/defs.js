@@ -146,3 +146,10 @@ export function SQ120(sq64) {
 export const MAXGAMEMOVES = 2048;
 export const MAXPOSITIONMOVES = 256;
 export const MAXDEPTH = 64;
+
+export const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+
+export const PceChar = '.PNBRQKpnbrqk';
+export const SideChar = 'wb-';
+export const RankChar = '12345678';
+export const FileChar = 'abcdefgh';

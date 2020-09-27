@@ -17,12 +17,16 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
 
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64 } from '@/utils/engine/main';
+import { ParseFen, PrintBoard } from '@/utils/engine/board';
+import { START_FEN } from '@/utils/engine/defs';
 
 export default {
   mounted() {
     this.init();
     // eslint-disable-next-line
     console.log("Main Init Called");
+    ParseFen(START_FEN);
+    PrintBoard();
   },
   methods: {
     init() {

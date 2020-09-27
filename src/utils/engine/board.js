@@ -1,6 +1,6 @@
-/* eslint no-bitwise: ["error", { "allow": ["^=","|="] }] */
+/* eslint no-bitwise: ["error", { "allow": ["^=","|=","&"] }] */
 
-import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT } from './defs';
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar } from './defs';
 
 export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
@@ -167,4 +167,49 @@ export function ParseFen(fen) {
   }
 
   GameBoard.posKey = GeneratePosKey();
+}
+
+export function PrintBoard() {
+  let sq;
+  let file;
+  let rank;
+  let piece;
+  let line;
+
+  // eslint-disable-next-line
+  console.log('\nGame Board:\n');
+  for (rank = RANKS.RANK_8; rank >= RANKS.RANK_1; rank -= 1) {
+    line = (`${RankChar[rank]}  `);
+    for (file = FILES.FILE_A; file <= FILES.FILE_H; file += 1) {
+      sq = FR2SQ(file, rank);
+      piece = GameBoard.pieces[sq];
+      line += (` ${PceChar[piece]} `);
+    }
+    // eslint-disable-next-line
+    console.log(line);
+  }
+
+  // eslint-disable-next-line
+  console.log('');
+  line = '   ';
+  for (file = FILES.FILE_A; file <= FILES.FILE_H; file += 1) {
+    line += (` ${FileChar[file]} `);
+  }
+
+  // eslint-disable-next-line
+  console.log(line);
+  // eslint-disable-next-line
+  console.log(`side:${SideChar[GameBoard.side]}`);
+  // eslint-disable-next-line
+  console.log(`enPas:${GameBoard.enPas}`);
+  line = '';
+
+  if (GameBoard.castlePerm & CASTLEBIT.WKCA) line += 'K';
+  if (GameBoard.castlePerm & CASTLEBIT.WQCA) line += 'Q';
+  if (GameBoard.castlePerm & CASTLEBIT.BKCA) line += 'k';
+  if (GameBoard.castlePerm & CASTLEBIT.BQCA) line += 'q';
+  // eslint-disable-next-line
+  console.log(`castle:${line}`);
+  // eslint-disable-next-line
+  console.log(`key:${GameBoard.posKey.toString(16)}`);
 }
