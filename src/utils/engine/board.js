@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
 
-import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES } from './defs';
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ } from './defs';
 
 export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
@@ -81,11 +81,62 @@ export function ResetBoard() {
 }
 
 export function ParseFen(fen) {
-  // eslint-disable-next-line
-  console.log('fen');
-  // eslint-disable-next-line
-  console.log(fen);
-  // eslint-disable-next-line
-  console.log('fen');
   ResetBoard();
+  let rank = RANKS.RANK_8;
+  let file = FILES.FILE_A;
+  let piece = 0;
+  let count = 0;
+  let i = 0;
+  let sq120 = 0;
+  let fenCnt = 0; // fen[fenCnt]
+  const brdPieces = [];
+
+  while ((rank >= RANKS.RANK_1) && fenCnt < fen.length) {
+    count = 1;
+    switch (fen[fenCnt]) {
+      case 'p': piece = PIECES.bP; break;
+      case 'r': piece = PIECES.bR; break;
+      case 'n': piece = PIECES.bN; break;
+      case 'b': piece = PIECES.bB; break;
+      case 'k': piece = PIECES.bK; break;
+      case 'q': piece = PIECES.bQ; break;
+      case 'P': piece = PIECES.wP; break;
+      case 'R': piece = PIECES.wR; break;
+      case 'N': piece = PIECES.wN; break;
+      case 'B': piece = PIECES.wB; break;
+      case 'K': piece = PIECES.wK; break;
+      case 'Q': piece = PIECES.wQ; break;
+
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+        piece = PIECES.EMPTY;
+        count = fen[fenCnt].charCodeAt() - '0'.charCodeAt();
+        break;
+
+      case '/':
+      case ' ':
+        rank -= 1;
+        file = FILES.FILE_A;
+        fenCnt += 1;
+        // eslint-disable-next-line
+        continue;
+      default:
+        // eslint-disable-next-line
+        console.log('FEN error');
+        return;
+    }
+
+    for (i = 0; i < count; i += 1) {
+      sq120 = FR2SQ(file, rank);
+      brdPieces[sq120] = piece;
+      file += 1;
+    }
+    fenCnt += 1;
+  }
 }
