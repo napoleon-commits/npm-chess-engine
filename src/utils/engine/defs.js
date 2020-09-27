@@ -142,3 +142,7 @@ export function SQ64(sq120) {
 export function SQ120(sq64) {
   return Sq64ToSq120[(sq64)];
 }
+
+export const MAXGAMEMOVES = 2048;
+export const MAXPOSITIONMOVES = 256;
+export const MAXDEPTH = 64;

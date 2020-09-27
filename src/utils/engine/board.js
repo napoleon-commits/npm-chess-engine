@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
 
-import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES } from './defs';
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES } from './defs';
 
 export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
@@ -13,6 +13,9 @@ export const GameBoard = {
   pceNum: new Array(13), // indexed by Pce
   pList: new Array(14 * 10),
   posKey: 0,
+  moveList: new Array(MAXDEPTH * MAXPOSITIONMOVES),
+  moveScores: new Array(MAXDEPTH * MAXPOSITIONMOVES),
+  moveListStart: new Array(MAXDEPTH),
 };
 
 export function PCEINDEX(pce, pceNum) {
@@ -42,4 +45,47 @@ export function GeneratePosKey() {
   finalKey ^= CastleKeys[GameBoard.castlePerm];
 
   return finalKey;
+}
+
+export function ResetBoard() {
+  let index = 0;
+
+  for (index = 0; index < BRD_SQ_NUM; index += 1) {
+    GameBoard.pieces[index] = SQUARES.OFFBOARD;
+  }
+
+  for (index = 0; index < 64; index += 1) {
+    GameBoard.pieces[SQ120(index)] = PIECES.EMPTY;
+  }
+
+  for (index = 0; index < 14 * 120; index += 1) {
+    GameBoard.pList[index] = PIECES.EMPTY;
+  }
+
+  for (index = 0; index < 2; index += 1) {
+    GameBoard.material[index] = 0;
+  }
+
+  for (index = 0; index < 13; index += 1) {
+    GameBoard.pceNum[index] = 0;
+  }
+
+  GameBoard.side = COLOURS.BOTH;
+  GameBoard.enPas = SQUARES.NO_SQ;
+  GameBoard.fiftyMove = 0;
+  GameBoard.ply = 0;
+  GameBoard.hisPly = 0;
+  GameBoard.castlePerm = 0;
+  GameBoard.posKey = 0;
+  GameBoard.moveListStart[GameBoard.ply] = 0;
+}
+
+export function ParseFen(fen) {
+  // eslint-disable-next-line
+  console.log('fen');
+  // eslint-disable-next-line
+  console.log(fen);
+  // eslint-disable-next-line
+  console.log('fen');
+  ResetBoard();
 }
