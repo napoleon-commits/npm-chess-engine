@@ -5,8 +5,8 @@
       </header>
       <div>
           Fen:<br />
-          <input type="text"/>
-          <button type="button">
+          <input type="text" v-model="fenIn"/>
+          <button type="button" @click="vueSetFen">
               Set Position
           </button>
       </div>
@@ -19,8 +19,14 @@
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64 } from '@/utils/engine/main';
 import { ParseFen, PrintBoard } from '@/utils/engine/board';
 import { START_FEN } from '@/utils/engine/defs';
+import { setFen } from '@/utils/engine/gui';
 
 export default {
+  data() {
+    return {
+      fenIn: '',
+    };
+  },
   mounted() {
     this.init();
     // eslint-disable-next-line
@@ -35,6 +41,9 @@ export default {
       InitFilesRanksBrd();
       InitHashKeys();
       InitSq120To64();
+    },
+    vueSetFen() {
+      setFen(this.fenIn);
     },
   },
 };
