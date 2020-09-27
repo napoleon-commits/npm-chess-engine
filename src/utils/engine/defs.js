@@ -127,3 +127,7 @@ export function RAND_32() {
     | (Math.floor((Math.random() * 255) + 1))
   );
 }
+
+export const PieceKeys = new Array(14 * 120);
+export const SideKey = [];
+export const CastleKeys = new Array(16);

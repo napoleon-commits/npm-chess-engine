@@ -8,7 +8,7 @@ describe('the functions inside the def.js file', () => {
   });
   it('should test the RAND_32 function', () => {
     const randomNumber = RAND_32();
-    expect(randomNumber).toBeLessThanOrEqual(2139095040);
+    expect(randomNumber).toBeLessThanOrEqual(2147483647);
     expect(randomNumber).toBeGreaterThanOrEqual(0);
   });
 });

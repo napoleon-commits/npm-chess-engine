@@ -1,6 +1,7 @@
-import { BRD_SQ_NUM, COLOURS } from './defs';
+/* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
 
-// eslint-disable-next-line
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES } from './defs';
+
 export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
   side: COLOURS.WHITE,
@@ -16,4 +17,29 @@ export const GameBoard = {
 
 export function PCEINDEX(pce, pceNum) {
   return ((pce * 10) + pceNum);
+}
+
+export function GeneratePosKey() {
+  let sq = 0;
+  let finalKey = 0;
+  let piece = PIECES.EMPTY;
+
+  for (sq = 0; sq < BRD_SQ_NUM; sq += 1) {
+    piece = GameBoard.pieces[sq];
+    if (piece !== PIECES.EMPTY && piece !== SQUARES.OFFBOARD) {
+      finalKey ^= PieceKeys[(piece * 120) + sq];
+    }
+  }
+
+  if (GameBoard.side === COLOURS.WHITE) {
+    finalKey ^= SideKey;
+  }
+
+  if (GameBoard.enPas !== SQUARES.NO_SQ) {
+    finalKey ^= PieceKeys[GameBoard.enPas];
+  }
+
+  finalKey ^= CastleKeys[GameBoard.castlePerm];
+
+  return finalKey;
 }

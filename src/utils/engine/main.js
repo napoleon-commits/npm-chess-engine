@@ -1,6 +1,5 @@
-import { FILES, RANKS, SQUARES, BRD_SQ_NUM, FilesBrd, RanksBrd, FR2SQ } from './defs';
+import { FILES, RANKS, SQUARES, BRD_SQ_NUM, FilesBrd, RanksBrd, FR2SQ, RAND_32, CastleKeys, SideKey, PieceKeys } from './defs';
 
-// eslint-disable-next-line
 export function InitFilesRanksBrd() {
   let index = 0;
   let file = FILES.FILE_A;
@@ -26,4 +25,18 @@ export function InitFilesRanksBrd() {
     console.log(`FilesBrd[SQUARES.A1]:${FilesBrd[SQUARES.A1]} RanksBrd[SQUARES.A1]:${RanksBrd[SQUARES.A1]}`);
   //   eslint-disable-next-line
     console.log(`FilesBrd[SQUARES.E8]:${FilesBrd[SQUARES.E8]} RanksBrd[SQUARES.E8]:${RanksBrd[SQUARES.E8]}`);
+}
+
+export function InitHashKeys() {
+  let index = 0;
+
+  for (index = 0; index < 14 * 120; index += 1) {
+    PieceKeys[index] = RAND_32();
+  }
+
+  SideKey[0] = RAND_32();
+
+  for (index = 0; index < 16; index += 1) {
+    CastleKeys[index] = RAND_32();
+  }
 }
