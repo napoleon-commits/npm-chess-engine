@@ -1,6 +1,6 @@
-/* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
+/* eslint no-bitwise: ["error", { "allow": ["^=","|="] }] */
 
-import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ } from './defs';
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT } from './defs';
 
 export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
@@ -89,7 +89,6 @@ export function ParseFen(fen) {
   let i = 0;
   let sq120 = 0;
   let fenCnt = 0; // fen[fenCnt]
-  const brdPieces = [];
 
   while ((rank >= RANKS.RANK_1) && fenCnt < fen.length) {
     count = 1;
@@ -134,9 +133,38 @@ export function ParseFen(fen) {
 
     for (i = 0; i < count; i += 1) {
       sq120 = FR2SQ(file, rank);
-      brdPieces[sq120] = piece;
+      GameBoard.pieces[sq120] = piece;
       file += 1;
     }
     fenCnt += 1;
+  } // while loop end
+
+  // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+  GameBoard.side = (fen[fenCnt] === 'w') ? COLOURS.WHITE : COLOURS.BLACK;
+  fenCnt += 2;
+
+  for (i = 0; i < 4; i += 1) {
+    if (fen[fenCnt] === ' ') {
+      break;
+    }
+    switch (fen[fenCnt]) {
+      case 'K': GameBoard.castlePerm |= CASTLEBIT.WKCA; break;
+      case 'Q': GameBoard.castlePerm |= CASTLEBIT.WQCA; break;
+      case 'k': GameBoard.castlePerm |= CASTLEBIT.BKCA; break;
+      case 'q': GameBoard.castlePerm |= CASTLEBIT.BQCA; break;
+      default: break;
+    }
+    fenCnt += 1;
   }
+  fenCnt += 1;
+
+  if (fen[fenCnt] !== '-') {
+    file = fen[fenCnt].charCodeAt() - 'a'.charCodeAt();
+    rank = fen[fenCnt + 1].charCodeAt() - '1'.charCodeAt();
+    // eslint-disable-next-line
+    console.log(`fen[fenCnt]:${fen[fenCnt]} File:${file} Rank:${rank}`);
+    GameBoard.enPas = FR2SQ(file, rank);
+  }
+
+  GameBoard.posKey = GeneratePosKey();
 }
