@@ -8,4 +8,7 @@ export const GameBoard = {
   hisPly: 0,
   ply: 0,
   castlePerm: 0,
+  material: new Array(2), // WHITE,BLACK material of pieces
+  pceNum: new Array(13), // indexed by Pce
+  pList: new Array(14 * 10),
 };
