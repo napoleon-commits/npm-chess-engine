@@ -11,4 +11,9 @@ export const GameBoard = {
   material: new Array(2), // WHITE,BLACK material of pieces
   pceNum: new Array(13), // indexed by Pce
   pList: new Array(14 * 10),
+  posKey: 0,
 };
+
+export function PCEINDEX(pce, pceNum) {
+  return ((pce * 10) + pceNum);
+}

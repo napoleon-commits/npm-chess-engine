@@ -1,3 +1,5 @@
+/* eslint no-bitwise: ["error", { "allow": ["|","<<"] }] */
+
 export const PIECES = {
   EMPTY: 0,
   wP: 1,
@@ -116,3 +118,12 @@ export const PieceSlides = [
   BOOL.FALSE, BOOL.FALSE, BOOL.FALSE, BOOL.TRUE, BOOL.TRUE, BOOL.TRUE, BOOL.FALSE, BOOL.FALSE,
   BOOL.FALSE, BOOL.TRUE, BOOL.TRUE, BOOL.TRUE, BOOL.FALSE,
 ];
+
+export function RAND_32() {
+  return (
+    (Math.floor((Math.random() * 255) + 1) << 23)
+    | (Math.floor((Math.random() * 255) + 1) << 16)
+    | (Math.floor((Math.random() * 255) + 1) << 8)
+    | (Math.floor((Math.random() * 255) + 1))
+  );
+}
