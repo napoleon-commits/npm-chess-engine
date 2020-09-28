@@ -20,6 +20,8 @@ import { InitFilesRanksBrd, InitHashKeys, InitSq120To64 } from '@/utils/engine/m
 import { ParseFen, PrintBoard } from '@/utils/engine/board';
 import { START_FEN } from '@/utils/engine/defs';
 import { setFen } from '@/utils/engine/gui';
+import { GenerateMoves } from '@/utils/engine/movegen';
+import { PrintMoveList } from '@/utils/engine/io';
 
 export default {
   data() {
@@ -33,6 +35,8 @@ export default {
     console.log("Main Init Called");
     ParseFen(START_FEN);
     PrintBoard();
+    GenerateMoves();
+    PrintMoveList();
   },
   methods: {
     init() {

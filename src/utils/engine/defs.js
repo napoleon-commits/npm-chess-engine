@@ -196,3 +196,19 @@ export const MFLAGCAP = 0x7C000;
 export const MFLAGPROM = 0xF00000;
 
 export const NOMOVE = 0;
+
+export const DirNum = [0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8];
+export const PceDir = [
+  0, 0, KnDir, BiDir, RkDir, KiDir, KiDir, 0, KnDir, BiDir, RkDir, KiDir, KiDir,
+];
+export const LoopNonSlidePce = [PIECES.wN, PIECES.wK, 0, PIECES.bN, PIECES.bK, 0];
+export const LoopNonSlideIndex = [0, 3];
+export const LoopSlidePce = [
+  PIECES.wB, PIECES.wR, PIECES.wQ, 0, PIECES.bB, PIECES.bR, PIECES.bQ, 0,
+];
+export const LoopSlideIndex = [0, 4];
+
+export function SQOFFBOARD(sq) {
+  if (FilesBrd[sq] === SQUARES.OFFBOARD) return BOOL.TRUE;
+  return BOOL.FALSE;
+}

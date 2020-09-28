@@ -47,7 +47,7 @@ export function GeneratePosKey() {
   }
 
   if (GameBoard.side === COLOURS.WHITE) {
-    finalKey ^= SideKey;
+    finalKey ^= SideKey[0];
   }
 
   if (GameBoard.enPas !== SQUARES.NO_SQ) {
