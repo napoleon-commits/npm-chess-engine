@@ -1,4 +1,4 @@
-/* eslint no-bitwise: ["error", { "allow": ["|","<<"] }] */
+/* eslint no-bitwise: ["error", { "allow": ["|","<<",">>","&"] }] */
 
 export const PIECES = {
   EMPTY: 0,
@@ -182,3 +182,17 @@ fromSq = d & 0x7F
 0000 1111 0000 0000 0000 0000 0000 -> Promoted Piece >> 20, 0xF
 0001 0000 0000 0000 0000 0000 0000 -> Castle 0x1000000
 */
+
+export function FROMSQ(m) { return (m & 0x7F); }
+export function TOSQ(m) { return ((m >> 7) & 0x7F); }
+export function CAPTURED(m) { return ((m >> 14) & 0xF); }
+export function PROMOTED(m) { return ((m >> 20) & 0xF); }
+
+export const MFLAGEP = 0x40000;
+export const MFLAGPS = 0x80000;
+export const MFLAGCA = 0x100000;
+
+export const MFLAGCAP = 0x7C000;
+export const MFLAGPROM = 0xF00000;
+
+export const NOMOVE = 0;
