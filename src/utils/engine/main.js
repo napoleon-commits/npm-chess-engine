@@ -1,4 +1,13 @@
-import { FILES, RANKS, SQUARES, BRD_SQ_NUM, FilesBrd, RanksBrd, FR2SQ, RAND_32, CastleKeys, SideKey, PieceKeys, Sq120ToSq64, Sq64ToSq120, NOMOVE, GameBoard, MAXGAMEMOVES } from './defs';
+/* eslint no-bitwise: ["error", { "allow": ["^=","^"] }] */
+
+import { FILES, NOMOVE, PVENTRIES, MAXGAMEMOVES, Sq120ToSq64, Sq64ToSq120, RANKS, SideKey, FR2SQ, SQUARES, RAND_32, GameBoard, BRD_SQ_NUM, PieceKeys, FilesBrd, RanksBrd, CastleKeys } from './defs';
+import { InitMvvLva } from './movegen';
+
+// $(function() {
+// init();
+// console.log("Main Init Called");
+// NewGame(START_FEN);
+// });
 
 export function InitFilesRanksBrd() {
   let index = 0;
@@ -70,4 +79,48 @@ export function InitBoardVars() {
       posKey: 0,
     });
   }
+
+  for (index = 0; index < PVENTRIES; index += 1) {
+    GameBoard.PvTable.push({
+      move: NOMOVE,
+      posKey: 0,
+    });
+  }
+}
+
+export function InitBoardSquares() {
+//   let light = 0;
+  //   let rankName;
+  //   let fileName;
+  //   let divString;
+//   let lastLight = 0;
+  let rankIter = 0;
+  let fileIter = 0;
+  //   let lightString;
+
+  for (rankIter = RANKS.RANK_8; rankIter >= RANKS.RANK_1; rankIter -= 1) {
+    // light = lastLight ^ 1;
+    // lastLight ^= 1;
+    // rankName = `rank${rankIter + 1}`;
+    for (fileIter = FILES.FILE_A; fileIter <= FILES.FILE_H; fileIter += 1) {
+    //   fileName = `file${fileIter + 1}`;
+
+    //   if (light === 0) lightString = 'Light';
+    //   else lightString = 'Dark';
+      //   divString = `<div class="Square ${rankName} ${fileName} ${lightString}"/>`;
+    //   light ^= 1;
+    //   $('#Board').append(divString);
+    }
+  }
+}
+
+export function init() {
+  // eslint-disable-next-line
+  console.log('init() called');
+  InitFilesRanksBrd();
+  InitHashKeys();
+  InitSq120To64();
+  InitBoardVars();
+  InitMvvLva();
+  InitBoardSquares();
 }
