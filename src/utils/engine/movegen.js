@@ -2,6 +2,7 @@
 
 import { LoopSlidePce, PIECES, GameBoard, BOOL, DirNum, PieceCol, SQOFFBOARD, PCEINDEX, PceDir, LoopNonSlidePce, LoopNonSlideIndex, MFLAGEP, COLOURS, SQUARES, MFLAGCA, RANKS, RanksBrd, CASTLEBIT, TOSQ, MFLAGPS, FROMSQ, CAPTURED, NOMOVE, LoopSlideIndex, BRD_SQ_NUM, MAXDEPTH } from './defs';
 import { SqAttacked } from './board';
+import { TakeMove, MakeMove } from './makemove';
 
 export const MvvLvaValue = [0, 100, 200, 300, 400, 500, 600, 100, 200, 300, 400, 500, 600];
 export const MvvLvaScores = new Array(14 * 14);
