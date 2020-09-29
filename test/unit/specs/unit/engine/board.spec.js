@@ -1,5 +1,5 @@
-import { PCEINDEX, ResetBoard, GameBoard } from '@/utils/engine/board';
-import { SQUARES, COLOURS, PIECES, BRD_SQ_NUM, SQ120 } from '@/utils/engine/defs';
+import { PCEINDEX, ResetBoard } from '@/utils/engine/board';
+import { SQUARES, COLOURS, PIECES, BRD_SQ_NUM, SQ120, GameBoard } from '@/utils/engine/defs';
 
 describe('the tests inside the board.js file', () => {
   it('should test the PCEINDEX function', () => {

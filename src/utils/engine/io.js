@@ -1,5 +1,4 @@
-import { FileChar, FilesBrd, RankChar, RanksBrd, FROMSQ, TOSQ, PROMOTED, PIECES, PieceKnight, BOOL, PieceBishopQueen, PieceRookQueen } from './defs';
-import { GameBoard } from './board';
+import { FileChar, FilesBrd, RankChar, RanksBrd, FROMSQ, TOSQ, PROMOTED, PIECES, PieceKnight, BOOL, PieceBishopQueen, PieceRookQueen, GameBoard } from './defs';
 
 export function PrSq(sq) {
   return (FileChar[FilesBrd[sq]] + RankChar[RanksBrd[sq]]);

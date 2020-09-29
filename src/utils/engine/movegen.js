@@ -1,7 +1,7 @@
 /* eslint no-bitwise: ["error", { "allow": ["|","<<","&"] }] */
 
-import { GameBoard, PCEINDEX, SqAttacked } from './board';
-import { PIECES, PieceCol, SQOFFBOARD, BOOL, DirNum, PceDir, LoopNonSlideIndex, LoopSlidePce, LoopNonSlidePce, SQUARES, MFLAGCA, COLOURS, CASTLEBIT, MFLAGEP, RANKS, RanksBrd, MFLAGPS, LoopSlideIndex } from './defs';
+import { PCEINDEX, SqAttacked } from './board';
+import { PIECES, PieceCol, SQOFFBOARD, BOOL, DirNum, PceDir, LoopNonSlideIndex, LoopSlidePce, LoopNonSlidePce, SQUARES, MFLAGCA, COLOURS, CASTLEBIT, MFLAGEP, RANKS, RanksBrd, MFLAGPS, LoopSlideIndex, GameBoard } from './defs';
 
 
 // eslint-disable-next-line

@@ -1,23 +1,7 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=","|=","&"] }] */
 
-import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, MAXDEPTH, MAXPOSITIONMOVES, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar, PieceCol, PieceVal, BOOL, KnDir, RkDir, BiDir, KiDir, PieceRookQueen, PieceBishopQueen, PieceKnight, PieceKing } from './defs';
+import { BRD_SQ_NUM, COLOURS, CastleKeys, PieceKeys, SQUARES, SideKey, PIECES, SQ120, RANKS, FILES, FR2SQ, CASTLEBIT, SideChar, FileChar, PceChar, RankChar, PieceCol, PieceVal, BOOL, KnDir, RkDir, BiDir, KiDir, PieceRookQueen, PieceBishopQueen, PieceKnight, PieceKing, GameBoard } from './defs';
 import { PrSq } from './io';
-
-export const GameBoard = {
-  pieces: new Array(BRD_SQ_NUM),
-  side: COLOURS.WHITE,
-  fiftyMove: 0,
-  hisPly: 0,
-  ply: 0,
-  castlePerm: 0,
-  material: new Array(2), // WHITE,BLACK material of pieces
-  pceNum: new Array(13), // indexed by Pce
-  pList: new Array(14 * 10),
-  posKey: 0,
-  moveList: new Array(MAXDEPTH * MAXPOSITIONMOVES),
-  moveScores: new Array(MAXDEPTH * MAXPOSITIONMOVES),
-  moveListStart: new Array(MAXDEPTH),
-};
 
 /*
   pce * 10 + pceNum
