@@ -341,3 +341,64 @@ export function PrintBoard() {
   // eslint-disable-next-line
   console.log(`key:${GameBoard.posKey.toString(16)}`);
 }
+
+export function CheckBoard() {
+  const tPceNumArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const tMaterial = [0, 0];
+  let sq64;
+  let tPiece;
+  let tPceNum;
+  let sq120;
+  // eslint-disable-next-line
+  let colour;
+  // eslint-disable-next-line
+  let pcount;
+
+  for (tPiece = PIECES.wP; tPiece <= PIECES.bK; tPiece += 1) {
+    for (tPceNum = 0; tPceNum < GameBoard.pceNum[tPiece]; tPceNum += 1) {
+      sq120 = GameBoard.pList[PCEINDEX(tPiece, tPceNum)];
+      if (GameBoard.pieces[sq120] !== tPiece) {
+        // eslint-disable-next-line
+        console.log('Error Pce Lists');
+        return BOOL.FALSE;
+      }
+    }
+  }
+
+  for (sq64 = 0; sq64 < 64; sq64 += 1) {
+    sq120 = SQ120(sq64);
+    tPiece = GameBoard.pieces[sq120];
+    tPceNumArray[tPiece] += 1;
+    tMaterial[PieceCol[tPiece]] += PieceVal[tPiece];
+  }
+
+  for (tPiece = PIECES.wP; tPiece <= PIECES.bK; tPiece += 1) {
+    if (tPceNumArray[tPiece] !== GameBoard.pceNum[tPiece]) {
+      // eslint-disable-next-line
+      console.log('Error tPceNumArray');
+      return BOOL.FALSE;
+    }
+  }
+
+  if (
+    tMaterial[COLOURS.WHITE] !== GameBoard.material[COLOURS.WHITE] ||
+    tMaterial[COLOURS.BLACK] !== GameBoard.material[COLOURS.BLACK]
+  ) {
+    // eslint-disable-next-line
+    console.log('Error tMaterial');
+    return BOOL.FALSE;
+  }
+
+  if (GameBoard.side !== COLOURS.WHITE && GameBoard.side !== COLOURS.BLACK) {
+    // eslint-disable-next-line
+    console.log('Error GameBoard.side');
+    return BOOL.FALSE;
+  }
+
+  if (GeneratePosKey() !== GameBoard.posKey) {
+    // eslint-disable-next-line
+    console.log('Error GameBoard.posKey');
+    return BOOL.FALSE;
+  }
+  return BOOL.TRUE;
+}

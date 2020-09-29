@@ -1,4 +1,4 @@
-/* eslint no-bitwise: ["error", { "allow": ["|","<<",">>","&"] }] */
+/* eslint no-bitwise: ["error", { "allow": ["|","<<",">>","&","^="] }] */
 
 export const PIECES = {
   EMPTY: 0,
@@ -228,3 +228,28 @@ export const GameBoard = {
   moveScores: new Array(MAXDEPTH * MAXPOSITIONMOVES),
   moveListStart: new Array(MAXDEPTH),
 };
+
+export const Kings = [PIECES.wK, PIECES.bK];
+export const CastlePerm = [
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 13, 15, 15, 15, 12, 15, 15, 14, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 7, 15, 15, 15, 3, 15, 15, 11, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+  15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+];
+
+export function HASH_PCE(pce, sq) {
+  GameBoard.posKey ^= PieceKeys[(pce * 120) + sq];
+}
+
+export function HASH_CA() { GameBoard.posKey ^= CastleKeys[GameBoard.castlePerm]; }
+export function HASH_SIDE() { GameBoard.posKey ^= SideKey; }
+export function HASH_EP() { GameBoard.posKey ^= PieceKeys[GameBoard.enPas]; }
+

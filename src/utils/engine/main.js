@@ -1,4 +1,4 @@
-import { FILES, RANKS, SQUARES, BRD_SQ_NUM, FilesBrd, RanksBrd, FR2SQ, RAND_32, CastleKeys, SideKey, PieceKeys, Sq120ToSq64, Sq64ToSq120 } from './defs';
+import { FILES, RANKS, SQUARES, BRD_SQ_NUM, FilesBrd, RanksBrd, FR2SQ, RAND_32, CastleKeys, SideKey, PieceKeys, Sq120ToSq64, Sq64ToSq120, NOMOVE, GameBoard, MAXGAMEMOVES } from './defs';
 
 export function InitFilesRanksBrd() {
   let index = 0;
@@ -56,5 +56,18 @@ export function InitSq120To64() {
       Sq120ToSq64[sq] = sq64;
       sq64 += 1;
     }
+  }
+}
+
+export function InitBoardVars() {
+  let index = 0;
+  for (index = 0; index < MAXGAMEMOVES; index += 1) {
+    GameBoard.history.push({
+      move: NOMOVE,
+      castlePerm: 0,
+      enPas: 0,
+      fiftyMove: 0,
+      posKey: 0,
+    });
   }
 }
