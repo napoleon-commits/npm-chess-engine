@@ -233,7 +233,7 @@ export function SQOFFBOARD(sq) {
   return BOOL.FALSE;
 }
 
-const GameBoard = {
+export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
   side: COLOURS.WHITE,
   fiftyMove: 0,

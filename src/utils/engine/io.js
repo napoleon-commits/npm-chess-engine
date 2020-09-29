@@ -1,4 +1,4 @@
-import { FileChar, FilesBrd, RankChar, RanksBrd, FROMSQ, TOSQ, PROMOTED, PIECES, PieceKnight, BOOL, PieceBishopQueen, PieceRookQueen, GameBoard } from './defs';
+import { NOMOVE, BOOL, COLOURS, GameBoard, PIECES, PROMOTED, PieceBishopQueen, PieceRookQueen, TOSQ, FROMSQ, FileChar, RankChar, PieceKnight, FilesBrd, RanksBrd } from './defs';
 
 export function PrSq(sq) {
   return (FileChar[FilesBrd[sq]] + RankChar[RanksBrd[sq]]);
@@ -15,20 +15,18 @@ export function PrMove(move) {
   MvStr = FileChar[ff] + RankChar[rf] + FileChar[ft] + RankChar[rt];
 
   const promoted = PROMOTED(move);
-  // eslint-disable-next-line
-  console.log(`promoted = ${promoted}`);
   if (promoted !== PIECES.EMPTY) {
     let pchar = 'q';
     if (PieceKnight[promoted] === BOOL.TRUE) {
       pchar = 'n';
     } else if (
       PieceRookQueen[promoted] === BOOL.TRUE
-      && PieceBishopQueen[promoted] === BOOL.FALSE
+        && PieceBishopQueen[promoted] === BOOL.FALSE
     ) {
       pchar = 'r';
     } else if (
       PieceRookQueen[promoted] === BOOL.FALSE
-      && PieceBishopQueen[promoted] === BOOL.TRUE
+        && PieceBishopQueen[promoted] === BOOL.TRUE
     ) {
       pchar = 'b';
     }
@@ -51,7 +49,49 @@ export function PrintMoveList() {
   ) {
     move = GameBoard.moveList[index];
     // eslint-disable-next-line
-    console.log(`Move:${num}:${PrMove(move)}`);
+    console.log(`IMove:${num}:(${index}):${PrMove(move)} Score:${GameBoard.moveScores[index]}`);
     num += 1;
   }
+  // eslint-disable-next-line
+  console.log('End MoveList');
+}
+
+export function ParseMove(from, to) {
+  GenerateMoves();
+
+  let Move = NOMOVE;
+  let PromPce = PIECES.EMPTY;
+  let found = BOOL.FALSE;
+  let index;
+
+  for (index = GameBoard.moveListStart[GameBoard.ply];
+    index < GameBoard.moveListStart[GameBoard.ply + 1]; index += 1) {
+    Move = GameBoard.moveList[index];
+    if (FROMSQ(Move) === from && TOSQ(Move) === to) {
+      PromPce = PROMOTED(Move);
+      if (PromPce !== PIECES.EMPTY) {
+        if (
+          (PromPce === PIECES.wQ && GameBoard.side === COLOURS.WHITE) ||
+            (PromPce === PIECES.bQ && GameBoard.side === COLOURS.BLACK)
+        ) {
+          found = BOOL.TRUE;
+          break;
+        }
+        // eslint-disable-next-line
+        continue;
+      }
+      found = BOOL.TRUE;
+      break;
+    }
+  }
+
+  if (found !== BOOL.FALSE) {
+    if (MakeMove(Move) === BOOL.FALSE) {
+      return NOMOVE;
+    }
+    TakeMove();
+    return Move;
+  }
+
+  return NOMOVE;
 }
