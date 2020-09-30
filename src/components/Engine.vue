@@ -14,8 +14,10 @@
 </template>
 
 <script>
+/* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
 
 import { InitFilesRanksBrd } from '@/utils/engine/main';
+import { RAND_32 } from '@/utils/engine/defs';
 
 export default {
   data() {
@@ -27,6 +29,37 @@ export default {
     this.init();
     // eslint-disable-next-line
     console.log("Main Init Called");
+
+    /*
+    unique?
+    Piece on Sq
+    Side
+    Castle
+    EnPas
+
+    posKey ^= RandNum for all pces on sq
+    posKey ^= RandNum side.. and so on
+    */
+
+    const piece1 = RAND_32();
+    const piece2 = RAND_32();
+    const piece3 = RAND_32();
+    const piece4 = RAND_32();
+
+    let key = 0;
+    key ^= piece1;
+    key ^= piece2;
+    key ^= piece3;
+    key ^= piece4;
+    // eslint-disable-next-line
+    console.log("key:" + key.toString(16));	
+    key = 0;
+    key ^= piece4;
+    key ^= piece2;
+    key ^= piece1;
+    key ^= piece3;
+    // eslint-disable-next-line
+    console.log("key:" + key.toString(16));
   },
   methods: {
     vueSetFen() {
