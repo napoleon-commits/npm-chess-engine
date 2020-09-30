@@ -195,6 +195,93 @@ export function ResetBoard() {
   GameBoard.moveListStart[GameBoard.ply] = 0;
 }
 
+export function SqAttacked(sq, side) {
+  let pce;
+  let tSq;
+  let index;
+  let dir;
+
+  if (side === COLOURS.WHITE) {
+    if (GameBoard.pieces[sq - 11] === PIECES.wP || GameBoard.pieces[sq - 9] === PIECES.wP) {
+      return BOOL.TRUE;
+    }
+  } else if (GameBoard.pieces[sq + 11] === PIECES.bP || GameBoard.pieces[sq + 9] === PIECES.bP) {
+    return BOOL.TRUE;
+  }
+
+  for (index = 0; index < 8; index += 1) {
+    pce = GameBoard.pieces[sq + KnDir[index]];
+    if (pce !== SQUARES.OFFBOARD && PieceCol[pce] === side && PieceKnight[pce] === BOOL.TRUE) {
+      return BOOL.TRUE;
+    }
+  }
+
+  for (index = 0; index < 4; index += 1) {
+    dir = RkDir[index];
+    tSq = sq + dir;
+    pce = GameBoard.pieces[tSq];
+    while (pce !== SQUARES.OFFBOARD) {
+      if (pce !== PIECES.EMPTY) {
+        if (PieceRookQueen[pce] === BOOL.TRUE && PieceCol[pce] === side) {
+          return BOOL.TRUE;
+        }
+        break;
+      }
+      tSq += dir;
+      pce = GameBoard.pieces[tSq];
+    }
+  }
+
+  for (index = 0; index < 4; index += 1) {
+    dir = BiDir[index];
+    tSq = sq + dir;
+    pce = GameBoard.pieces[tSq];
+    while (pce !== SQUARES.OFFBOARD) {
+      if (pce !== PIECES.EMPTY) {
+        if (PieceBishopQueen[pce] === BOOL.TRUE && PieceCol[pce] === side) {
+          return BOOL.TRUE;
+        }
+        break;
+      }
+      tSq += dir;
+      pce = GameBoard.pieces[tSq];
+    }
+  }
+
+  for (index = 0; index < 8; index += 1) {
+    pce = GameBoard.pieces[sq + KiDir[index]];
+    if (pce !== SQUARES.OFFBOARD && PieceCol[pce] === side && PieceKing[pce] === BOOL.TRUE) {
+      return BOOL.TRUE;
+    }
+  }
+
+  return BOOL.FALSE;
+}
+
+export function PrintSqAttacked() {
+  let sq;
+  let file;
+  let rank;
+  let piece;
+
+  // eslint-disable-next-line
+  console.log('\nAttacked:\n');
+
+  for (rank = RANKS.RANK_8; rank >= RANKS.RANK_1; rank -= 1) {
+    let line = (`${rank + 1}  `);
+    for (file = FILES.FILE_A; file <= FILES.FILE_H; file += 1) {
+      sq = FR2SQ(file, rank);
+      if (SqAttacked(sq, GameBoard.side) === BOOL.TRUE) piece = 'X';
+      else piece = '-';
+      line += (` ${piece} `);
+    }
+    // eslint-disable-next-line
+    console.log(line);
+  }
+  // eslint-disable-next-line
+  console.log('');
+}
+
 // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 
 export function ParseFen(fen) {
@@ -286,91 +373,5 @@ export function ParseFen(fen) {
 
   GameBoard.posKey = GeneratePosKey();
   UpdateListsMaterial();
-}
-
-export function SqAttacked(sq, side) {
-  let pce;
-  let tSq;
-  let index;
-  let dir;
-
-  if (side === COLOURS.WHITE) {
-    if (GameBoard.pieces[sq - 11] === PIECES.wP || GameBoard.pieces[sq - 9] === PIECES.wP) {
-      return BOOL.TRUE;
-    }
-  } else if (GameBoard.pieces[sq + 11] === PIECES.bP || GameBoard.pieces[sq + 9] === PIECES.bP) {
-    return BOOL.TRUE;
-  }
-
-  for (index = 0; index < 8; index += 1) {
-    pce = GameBoard.pieces[sq + KnDir[index]];
-    if (pce !== SQUARES.OFFBOARD && PieceCol[pce] === side && PieceKnight[pce] === BOOL.TRUE) {
-      return BOOL.TRUE;
-    }
-  }
-
-  for (index = 0; index < 4; index += 1) {
-    dir = RkDir[index];
-    tSq = sq + dir;
-    pce = GameBoard.pieces[tSq];
-    while (pce !== SQUARES.OFFBOARD) {
-      if (pce !== PIECES.EMPTY) {
-        if (PieceRookQueen[pce] === BOOL.TRUE && PieceCol[pce] === side) {
-          return BOOL.TRUE;
-        }
-        break;
-      }
-      tSq += dir;
-      pce = GameBoard.pieces[tSq];
-    }
-  }
-
-  for (index = 0; index < 4; index += 1) {
-    dir = BiDir[index];
-    tSq = sq + dir;
-    pce = GameBoard.pieces[tSq];
-    while (pce !== SQUARES.OFFBOARD) {
-      if (pce !== PIECES.EMPTY) {
-        if (PieceBishopQueen[pce] === BOOL.TRUE && PieceCol[pce] === side) {
-          return BOOL.TRUE;
-        }
-        break;
-      }
-      tSq += dir;
-      pce = GameBoard.pieces[tSq];
-    }
-  }
-
-  for (index = 0; index < 8; index += 1) {
-    pce = GameBoard.pieces[sq + KiDir[index]];
-    if (pce !== SQUARES.OFFBOARD && PieceCol[pce] === side && PieceKing[pce] === BOOL.TRUE) {
-      return BOOL.TRUE;
-    }
-  }
-
-  return BOOL.FALSE;
-}
-
-export function PrintSqAttacked() {
-  let sq;
-  let file;
-  let rank;
-  let piece;
-
-  // eslint-disable-next-line
-  console.log('\nAttacked:\n');
-
-  for (rank = RANKS.RANK_8; rank >= RANKS.RANK_1; rank -= 1) {
-    let line = (`${rank + 1}  `);
-    for (file = FILES.FILE_A; file <= FILES.FILE_H; file += 1) {
-      sq = FR2SQ(file, rank);
-      if (SqAttacked(sq, GameBoard.side ^ 1) === BOOL.TRUE) piece = 'X';
-      else piece = '-';
-      line += (` ${piece} `);
-    }
-    // eslint-disable-next-line
-    console.log(line);
-  }
-  // eslint-disable-next-line
-  console.log('');
+  PrintSqAttacked();
 }

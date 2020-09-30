@@ -27,13 +27,6 @@ export function InitFilesRanksBrd() {
       RanksBrd[sq] = rank;
     }
   }
-
-  // eslint-disable-next-line
-  console.log("FilesBrd[0]:" + FilesBrd[0] + " RanksBrd[0]:" + RanksBrd[0]);
-  // eslint-disable-next-line
-  console.log("FilesBrd[SQUARES.A1]:" + FilesBrd[SQUARES.A1] + " RanksBrd[SQUARES.A1]:" + RanksBrd[SQUARES.A1]);
-  // eslint-disable-next-line
-	console.log("FilesBrd[SQUARES.E8]:" + FilesBrd[SQUARES.E8] + " RanksBrd[SQUARES.E8]:" + RanksBrd[SQUARES.E8]);
 }
 
 export function InitHashKeys() {
