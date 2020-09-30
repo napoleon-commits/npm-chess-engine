@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=",">>","&","<<","|"] }] */
 
-const PIECES = { EMPTY: 0,
+export const PIECES = { EMPTY: 0,
   wP: 1,
   wN: 2,
   wB: 3,
@@ -14,7 +14,7 @@ const PIECES = { EMPTY: 0,
   bQ: 11,
   bK: 12 };
 
-const BRD_SQ_NUM = 120;
+export const BRD_SQ_NUM = 120;
 
 export const FILES = { FILE_A: 0,
   FILE_B: 1,
@@ -40,7 +40,7 @@ export const COLOURS = { WHITE: 0, BLACK: 1, BOTH: 2 };
 
 export const CASTLEBIT = { WKCA: 1, WQCA: 2, BKCA: 4, BQCA: 8 };
 
-const SQUARES = {
+export const SQUARES = {
   A1: 21,
   B1: 22,
   C1: 23,
@@ -149,10 +149,10 @@ export const PieceSlides = [
   BOOL.TRUE, BOOL.FALSE,
 ];
 
-const KnDir = [-8, -19, -21, -12, 8, 19, 21, 12];
-const RkDir = [-1, -10, 1, 10];
-const BiDir = [-9, -11, 11, 9];
-const KiDir = [-1, -10, 1, 10, -9, -11, 11, 9];
+export const KnDir = [-8, -19, -21, -12, 8, 19, 21, 12];
+export const RkDir = [-1, -10, 1, 10];
+export const BiDir = [-9, -11, 11, 9];
+export const KiDir = [-1, -10, 1, 10, -9, -11, 11, 9];
 
 export const DirNum = [0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8];
 export const PceDir = [
@@ -167,9 +167,9 @@ export const LoopSlidePce = [
 ];
 export const LoopSlideIndex = [0, 4];
 
-const PieceKeys = new Array(14 * 120);
-const SideKey = [];
-const CastleKeys = new Array(16);
+export const PieceKeys = new Array(14 * 120);
+export const SideKey = [];
+export const CastleKeys = new Array(16);
 
 const Sq120ToSq64 = new Array(BRD_SQ_NUM);
 const Sq64ToSq120 = new Array(64);
