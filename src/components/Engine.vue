@@ -21,10 +21,19 @@ export default {
       fenIn: '',
     };
   },
+  mounted() {
+    this.init();
+    // eslint-disable-next-line
+    console.log("Main Init Called");
+  },
   methods: {
     vueSetFen() {
       // eslint-disable-next-line
       console.log(this.fenIn);
+    },
+    init() {
+      // eslint-disable-next-line
+      console.log("init() called");
     },
   },
 };
