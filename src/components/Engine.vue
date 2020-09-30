@@ -17,6 +17,8 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
 
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64 } from '@/utils/engine/main';
+import { START_FEN } from '@/utils/engine/defs';
+import { ParseFen, PrintBoard } from '@/utils/engine/board';
 
 export default {
   data() {
@@ -28,6 +30,8 @@ export default {
     this.init();
     // eslint-disable-next-line
     console.log("Main Init Called");
+    ParseFen(START_FEN);
+    PrintBoard();
   },
   methods: {
     vueSetFen() {
