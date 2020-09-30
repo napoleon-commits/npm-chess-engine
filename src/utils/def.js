@@ -283,7 +283,7 @@ export function HASH_PCE(pce, sq) {
 }
 
 export function HASH_CA() { GameBoard.posKey ^= CastleKeys[GameBoard.castlePerm]; }
-export function HASH_SIDE() { GameBoard.posKey ^= SideKey; }
+export function HASH_SIDE() { GameBoard.posKey ^= SideKey[0]; }
 export function HASH_EP() { GameBoard.posKey ^= PieceKeys[GameBoard.enPas]; }
 
 export const GameController = {
