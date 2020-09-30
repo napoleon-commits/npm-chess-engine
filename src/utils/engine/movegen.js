@@ -1,48 +1,54 @@
-/* eslint no-bitwise: ["error", { "allow": ["|","<<","&"] }] */
+/* eslint no-bitwise: ["error", { "allow": ["&","|",">>","<<"] }] */
 
-import { PCEINDEX, SqAttacked } from './board';
-import { PIECES, PieceCol, SQOFFBOARD, BOOL, DirNum, PceDir, LoopNonSlideIndex, LoopSlidePce, LoopNonSlidePce, SQUARES, MFLAGCA, COLOURS, CASTLEBIT, MFLAGEP, RANKS, RanksBrd, MFLAGPS, LoopSlideIndex, GameBoard } from './defs';
+import { LoopSlidePce, PIECES, GameBoard, BOOL, DirNum, PieceCol, SQOFFBOARD, PCEINDEX, PceDir, LoopNonSlidePce, LoopNonSlideIndex, MFLAGEP, COLOURS, SQUARES, MFLAGCA, RANKS, RanksBrd, CASTLEBIT, TOSQ, MFLAGPS, FROMSQ, CAPTURED, NOMOVE, LoopSlideIndex, BRD_SQ_NUM, MAXDEPTH } from './defs';
+import { SqAttacked } from './board';
+import { TakeMove, MakeMove } from './makemove';
 
+export const MvvLvaValue = [0, 100, 200, 300, 400, 500, 600, 100, 200, 300, 400, 500, 600];
+export const MvvLvaScores = new Array(14 * 14);
 
-// eslint-disable-next-line
+export function InitMvvLva() {
+  let Attacker;
+  let Victim;
+
+  for (Attacker = PIECES.wP; Attacker <= PIECES.bK; Attacker += 1) {
+    for (Victim = PIECES.wP; Victim <= PIECES.bK; Victim += 1) {
+      MvvLvaScores[(Victim * 14) + Attacker] = (
+        (MvvLvaValue[Victim] + 6) - (MvvLvaValue[Attacker] / 100)
+      );
+    }
+  }
+}
+
 export function MOVE(from, to, captured, promoted, flag) {
   return (from | (to << 7) | (captured << 14) | (promoted << 20) | flag);
 }
 
-
-/*
-  GameBoard.moveListStart[] -> 'index' for the first move at a given ply
-  GameBoard.moveList[index]
-
-  say ply 1 loop all moves
-  for(index = GameBoard.moveListStart[1]; index < GameBoard.moveListStart[2]; ++index)
-    move = moveList[index];
-
-    .. use move
-
-
-  GameBoard.moveListStart[2] = GameBoard.moveListStart[1];
-
-  AddMOve(Move) {
-  GameBoard.moveList[GameBoard.moveListStart[2]] = Move;
-  GameBoard.moveListStart[2]++;
-  }
-*/
-
-
 export function AddCaptureMove(move) {
   GameBoard.moveList[GameBoard.moveListStart[GameBoard.ply + 1]] = move;
-  GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1] += 1] = 0;
+  GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1] += 1] =
+    MvvLvaScores[(CAPTURED(move) * 14) + GameBoard.pieces[FROMSQ(move)]] + 1000000;
 }
 
 export function AddQuietMove(move) {
   GameBoard.moveList[GameBoard.moveListStart[GameBoard.ply + 1]] = move;
-  GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1] += 1] = 0;
+  GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] = 0;
+
+  if (move === GameBoard.searchKillers[GameBoard.ply]) {
+    GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] = 900000;
+  } else if (move === GameBoard.searchKillers[GameBoard.ply + MAXDEPTH]) {
+    GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] = 800000;
+  } else {
+    GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1]] =
+  GameBoard.searchHistory[(GameBoard.pieces[FROMSQ(move)] * BRD_SQ_NUM) + TOSQ(move)];
+  }
+
+  GameBoard.moveListStart[GameBoard.ply + 1] += 1;
 }
 
 export function AddEnPassantMove(move) {
   GameBoard.moveList[GameBoard.moveListStart[GameBoard.ply + 1]] = move;
-  GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1] += 1] = 0;
+  GameBoard.moveScores[GameBoard.moveListStart[GameBoard.ply + 1] += 1] = 105 + 1000000;
 }
 
 export function AddWhitePawnCaptureMove(from, to, cap) {
@@ -104,11 +110,7 @@ export function GenerateMoves() {
   if (GameBoard.side === COLOURS.WHITE) {
     pceType = PIECES.wP;
 
-    for (
-      pceNum = 0;
-      pceNum < GameBoard.pceNum[pceType];
-      pceNum += 1
-    ) {
+    for (pceNum = 0; pceNum < GameBoard.pceNum[pceType]; pceNum += 1) {
       sq = GameBoard.pList[PCEINDEX(pceType, pceNum)];
       if (GameBoard.pieces[sq + 10] === PIECES.EMPTY) {
         AddWhitePawnQuietMove(sq, sq + 10);
@@ -119,19 +121,19 @@ export function GenerateMoves() {
 
       if (
         SQOFFBOARD(sq + 9) === BOOL.FALSE
-        && PieceCol[GameBoard.pieces[sq + 9]] === COLOURS.BLACK
+            && PieceCol[GameBoard.pieces[sq + 9]] === COLOURS.BLACK
       ) {
         AddWhitePawnCaptureMove(sq, sq + 9, GameBoard.pieces[sq + 9]);
       }
 
       if (
         SQOFFBOARD(sq + 11) === BOOL.FALSE
-        && PieceCol[GameBoard.pieces[sq + 11]] === COLOURS.BLACK
+            && PieceCol[GameBoard.pieces[sq + 11]] === COLOURS.BLACK
       ) {
         AddWhitePawnCaptureMove(sq, sq + 11, GameBoard.pieces[sq + 11]);
       }
 
-      if (GameBoard.enPas !== SQUARES.NOSQ) {
+      if (GameBoard.enPas !== SQUARES.NO_SQ) {
         if (sq + 9 === GameBoard.enPas) {
           AddEnPassantMove(MOVE(sq, sq + 9, PIECES.EMPTY, PIECES.EMPTY, MFLAGEP));
         }
@@ -145,11 +147,11 @@ export function GenerateMoves() {
     if (GameBoard.castlePerm & CASTLEBIT.WKCA) {
       if (
         GameBoard.pieces[SQUARES.F1] === PIECES.EMPTY
-        && GameBoard.pieces[SQUARES.G1] === PIECES.EMPTY
+            && GameBoard.pieces[SQUARES.G1] === PIECES.EMPTY
       ) {
         if (
           SqAttacked(SQUARES.F1, COLOURS.BLACK) === BOOL.FALSE
-          && SqAttacked(SQUARES.E1, COLOURS.BLACK) === BOOL.FALSE
+              && SqAttacked(SQUARES.E1, COLOURS.BLACK) === BOOL.FALSE
         ) {
           AddQuietMove(MOVE(SQUARES.E1, SQUARES.G1, PIECES.EMPTY, PIECES.EMPTY, MFLAGCA));
         }
@@ -159,12 +161,12 @@ export function GenerateMoves() {
     if (GameBoard.castlePerm & CASTLEBIT.WQCA) {
       if (
         GameBoard.pieces[SQUARES.D1] === PIECES.EMPTY
-        && GameBoard.pieces[SQUARES.C1] === PIECES.EMPTY
-        && GameBoard.pieces[SQUARES.B1] === PIECES.EMPTY
+            && GameBoard.pieces[SQUARES.C1] === PIECES.EMPTY
+            && GameBoard.pieces[SQUARES.B1] === PIECES.EMPTY
       ) {
         if (
           SqAttacked(SQUARES.D1, COLOURS.BLACK) === BOOL.FALSE
-          && SqAttacked(SQUARES.E1, COLOURS.BLACK) === BOOL.FALSE
+              && SqAttacked(SQUARES.E1, COLOURS.BLACK) === BOOL.FALSE
         ) {
           AddQuietMove(MOVE(SQUARES.E1, SQUARES.C1, PIECES.EMPTY, PIECES.EMPTY, MFLAGCA));
         }
@@ -173,11 +175,7 @@ export function GenerateMoves() {
   } else {
     pceType = PIECES.bP;
 
-    for (
-      pceNum = 0;
-      pceNum < GameBoard.pceNum[pceType];
-      pceNum += 1
-    ) {
+    for (pceNum = 0; pceNum < GameBoard.pceNum[pceType]; pceNum += 1) {
       sq = GameBoard.pList[PCEINDEX(pceType, pceNum)];
       if (GameBoard.pieces[sq - 10] === PIECES.EMPTY) {
         AddBlackPawnQuietMove(sq, sq - 10);
@@ -188,19 +186,19 @@ export function GenerateMoves() {
 
       if (
         SQOFFBOARD(sq - 9) === BOOL.FALSE
-        && PieceCol[GameBoard.pieces[sq - 9]] === COLOURS.WHITE
+            && PieceCol[GameBoard.pieces[sq - 9]] === COLOURS.WHITE
       ) {
         AddBlackPawnCaptureMove(sq, sq - 9, GameBoard.pieces[sq - 9]);
       }
 
       if (
         SQOFFBOARD(sq - 11) === BOOL.FALSE
-        && PieceCol[GameBoard.pieces[sq - 11]] === COLOURS.WHITE
+            && PieceCol[GameBoard.pieces[sq - 11]] === COLOURS.WHITE
       ) {
         AddBlackPawnCaptureMove(sq, sq - 11, GameBoard.pieces[sq - 11]);
       }
 
-      if (GameBoard.enPas !== SQUARES.NOSQ) {
+      if (GameBoard.enPas !== SQUARES.NO_SQ) {
         if (sq - 9 === GameBoard.enPas) {
           AddEnPassantMove(MOVE(sq, sq - 9, PIECES.EMPTY, PIECES.EMPTY, MFLAGEP));
         }
@@ -213,11 +211,11 @@ export function GenerateMoves() {
     if (GameBoard.castlePerm & CASTLEBIT.BKCA) {
       if (
         GameBoard.pieces[SQUARES.F8] === PIECES.EMPTY
-        && GameBoard.pieces[SQUARES.G8] === PIECES.EMPTY
+            && GameBoard.pieces[SQUARES.G8] === PIECES.EMPTY
       ) {
         if (
           SqAttacked(SQUARES.F8, COLOURS.WHITE) === BOOL.FALSE
-          && SqAttacked(SQUARES.E8, COLOURS.WHITE) === BOOL.FALSE
+              && SqAttacked(SQUARES.E8, COLOURS.WHITE) === BOOL.FALSE
         ) {
           AddQuietMove(MOVE(SQUARES.E8, SQUARES.G8, PIECES.EMPTY, PIECES.EMPTY, MFLAGCA));
         }
@@ -227,12 +225,12 @@ export function GenerateMoves() {
     if (GameBoard.castlePerm & CASTLEBIT.BQCA) {
       if (
         GameBoard.pieces[SQUARES.D8] === PIECES.EMPTY
-        && GameBoard.pieces[SQUARES.C8] === PIECES.EMPTY
-        && GameBoard.pieces[SQUARES.B8] === PIECES.EMPTY
+            && GameBoard.pieces[SQUARES.C8] === PIECES.EMPTY
+            && GameBoard.pieces[SQUARES.B8] === PIECES.EMPTY
       ) {
         if (
           SqAttacked(SQUARES.D8, COLOURS.WHITE) === BOOL.FALSE
-          && SqAttacked(SQUARES.E8, COLOURS.WHITE) === BOOL.FALSE
+              && SqAttacked(SQUARES.E8, COLOURS.WHITE) === BOOL.FALSE
         ) {
           AddQuietMove(MOVE(SQUARES.E8, SQUARES.C8, PIECES.EMPTY, PIECES.EMPTY, MFLAGCA));
         }
@@ -253,7 +251,7 @@ export function GenerateMoves() {
 
         if (SQOFFBOARD(tSq) === BOOL.TRUE) {
           // eslint-disable-next-line
-          continue;
+            continue;
         }
 
         if (GameBoard.pieces[tSq] !== PIECES.EMPTY) {
@@ -287,6 +285,155 @@ export function GenerateMoves() {
             break;
           }
           AddQuietMove(MOVE(sq, tSq, PIECES.EMPTY, PIECES.EMPTY, 0));
+          tSq += dir;
+        }
+      }
+    }
+    pce = LoopSlidePce[pceIndex += 1];
+  }
+}
+
+export function MoveExists(move) {
+  GenerateMoves();
+
+  let index;
+  let moveFound = NOMOVE;
+  for (
+    index = GameBoard.moveListStart[GameBoard.ply];
+    index < GameBoard.moveListStart[GameBoard.ply + 1];
+    index += 1
+  ) {
+    moveFound = GameBoard.moveList[index];
+    if (MakeMove(moveFound) === BOOL.FALSE) {
+      // eslint-disable-next-line
+      continue;
+    }
+    TakeMove();
+    if (move === moveFound) {
+      return BOOL.TRUE;
+    }
+  }
+  return BOOL.FALSE;
+}
+
+export function GenerateCaptures() {
+  GameBoard.moveListStart[GameBoard.ply + 1] = GameBoard.moveListStart[GameBoard.ply];
+
+  let pceType;
+  let pceNum;
+  let sq;
+  let pceIndex;
+  let pce;
+  let tSq;
+  let dir;
+  let index;
+
+  if (GameBoard.side === COLOURS.WHITE) {
+    pceType = PIECES.wP;
+
+    for (pceNum = 0; pceNum < GameBoard.pceNum[pceType]; pceNum += 1) {
+      sq = GameBoard.pList[PCEINDEX(pceType, pceNum)];
+
+      if (
+        SQOFFBOARD(sq + 9) === BOOL.FALSE
+          && PieceCol[GameBoard.pieces[sq + 9]] === COLOURS.BLACK
+      ) {
+        AddWhitePawnCaptureMove(sq, sq + 9, GameBoard.pieces[sq + 9]);
+      }
+
+      if (
+        SQOFFBOARD(sq + 11) === BOOL.FALSE
+          && PieceCol[GameBoard.pieces[sq + 11]] === COLOURS.BLACK
+      ) {
+        AddWhitePawnCaptureMove(sq, sq + 11, GameBoard.pieces[sq + 11]);
+      }
+
+      if (GameBoard.enPas !== SQUARES.NO_SQ) {
+        if (sq + 9 === GameBoard.enPas) {
+          AddEnPassantMove(MOVE(sq, sq + 9, PIECES.EMPTY, PIECES.EMPTY, MFLAGEP));
+        }
+
+        if (sq + 11 === GameBoard.enPas) {
+          AddEnPassantMove(MOVE(sq, sq + 11, PIECES.EMPTY, PIECES.EMPTY, MFLAGEP));
+        }
+      }
+    }
+  } else {
+    pceType = PIECES.bP;
+
+    for (pceNum = 0; pceNum < GameBoard.pceNum[pceType]; pceNum += 1) {
+      sq = GameBoard.pList[PCEINDEX(pceType, pceNum)];
+
+      if (
+        SQOFFBOARD(sq - 9) === BOOL.FALSE
+          && PieceCol[GameBoard.pieces[sq - 9]] === COLOURS.WHITE
+      ) {
+        AddBlackPawnCaptureMove(sq, sq - 9, GameBoard.pieces[sq - 9]);
+      }
+
+      if (
+        SQOFFBOARD(sq - 11) === BOOL.FALSE
+          && PieceCol[GameBoard.pieces[sq - 11]] === COLOURS.WHITE
+      ) {
+        AddBlackPawnCaptureMove(sq, sq - 11, GameBoard.pieces[sq - 11]);
+      }
+
+      if (GameBoard.enPas !== SQUARES.NO_SQ) {
+        if (sq - 9 === GameBoard.enPas) {
+          AddEnPassantMove(MOVE(sq, sq - 9, PIECES.EMPTY, PIECES.EMPTY, MFLAGEP));
+        }
+
+        if (sq - 11 === GameBoard.enPas) {
+          AddEnPassantMove(MOVE(sq, sq - 11, PIECES.EMPTY, PIECES.EMPTY, MFLAGEP));
+        }
+      }
+    }
+  }
+
+  pceIndex = LoopNonSlideIndex[GameBoard.side];
+  pce = LoopNonSlidePce[pceIndex += 1];
+
+  while (pce !== 0) {
+    for (pceNum = 0; pceNum < GameBoard.pceNum[pce]; pceNum += 1) {
+      sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
+
+      for (index = 0; index < DirNum[pce]; index += 1) {
+        dir = PceDir[pce][index];
+        tSq = sq + dir;
+
+        if (SQOFFBOARD(tSq) === BOOL.TRUE) {
+          // eslint-disable-next-line
+          continue;
+        }
+
+        if (GameBoard.pieces[tSq] !== PIECES.EMPTY) {
+          if (PieceCol[GameBoard.pieces[tSq]] !== GameBoard.side) {
+            AddCaptureMove(MOVE(sq, tSq, GameBoard.pieces[tSq], PIECES.EMPTY, 0));
+          }
+        }
+      }
+    }
+    pce = LoopNonSlidePce[pceIndex += 1];
+  }
+
+  pceIndex = LoopSlideIndex[GameBoard.side];
+  pce = LoopSlidePce[pceIndex += 1];
+
+  while (pce !== 0) {
+    for (pceNum = 0; pceNum < GameBoard.pceNum[pce]; pceNum += 1) {
+      sq = GameBoard.pList[PCEINDEX(pce, pceNum)];
+
+      for (index = 0; index < DirNum[pce]; index += 1) {
+        dir = PceDir[pce][index];
+        tSq = sq + dir;
+
+        while (SQOFFBOARD(tSq) === BOOL.FALSE) {
+          if (GameBoard.pieces[tSq] !== PIECES.EMPTY) {
+            if (PieceCol[GameBoard.pieces[tSq]] !== GameBoard.side) {
+              AddCaptureMove(MOVE(sq, tSq, GameBoard.pieces[tSq], PIECES.EMPTY, 0));
+            }
+            break;
+          }
           tSq += dir;
         }
       }
