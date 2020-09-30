@@ -16,7 +16,7 @@
 <script>
 /* eslint no-bitwise: ["error", { "allow": ["^=",] }] */
 
-import { InitFilesRanksBrd, InitHashKeys } from '@/utils/engine/main';
+import { InitFilesRanksBrd, InitHashKeys, InitSq120To64 } from '@/utils/engine/main';
 
 export default {
   data() {
@@ -39,6 +39,7 @@ export default {
       console.log("init() called");
       InitFilesRanksBrd();
       InitHashKeys();
+      InitSq120To64();
     },
   },
 };
