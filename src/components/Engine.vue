@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     vueSetFen() {
-      // eslint-disable-next-line
-      console.log(this.fenIn);
+      ParseFen(this.fenIn);
+      PrintBoard();
     },
     init() {
       // eslint-disable-next-line
