@@ -8,7 +8,7 @@ import { PrMove } from './io';
 import { GetPvLine, ProbePvTable, StorePvMove } from './pvtable';
 import { EvalPosition } from './evaluate';
 
-const SearchController = {
+export const SearchController = {
   nodes: undefined,
   fh: undefined,
   fhf: undefined,
@@ -299,7 +299,7 @@ function UpdateDOMStats(domScore, domDepth) {
   };
 }
 
-export default function SearchPosition() {
+export function SearchPosition() {
   let bestMove = NOMOVE;
   let bestScore = -INFINITE;
   let Score = -INFINITE;
