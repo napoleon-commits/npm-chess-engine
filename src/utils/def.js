@@ -36,7 +36,7 @@ export const RANKS = { RANK_1: 0,
   RANK_8: 7,
   RANK_NONE: 8 };
 
-const COLOURS = { WHITE: 0, BLACK: 1, BOTH: 2 };
+export const COLOURS = { WHITE: 0, BLACK: 1, BOTH: 2 };
 
 export const CASTLEBIT = { WKCA: 1, WQCA: 2, BKCA: 4, BQCA: 8 };
 
@@ -61,7 +61,7 @@ const SQUARES = {
   OFFBOARD: 100,
 };
 
-const BOOL = { FALSE: 0, TRUE: 1 };
+export const BOOL = { FALSE: 0, TRUE: 1 };
 
 export const MAXGAMEMOVES = 2048;
 const MAXPOSITIONMOVES = 256;
@@ -70,7 +70,7 @@ export const INFINITE = 30000;
 export const MATE = 29000;
 export const PVENTRIES = 10000;
 
-const FilesBrd = new Array(BRD_SQ_NUM);
+export const FilesBrd = new Array(BRD_SQ_NUM);
 export const RanksBrd = new Array(BRD_SQ_NUM);
 
 export const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -168,7 +168,7 @@ export const LoopSlidePce = [
 export const LoopSlideIndex = [0, 4];
 
 const PieceKeys = new Array(14 * 120);
-let SideKey;
+const SideKey = [];
 const CastleKeys = new Array(16);
 
 const Sq120ToSq64 = new Array(BRD_SQ_NUM);
@@ -256,7 +256,7 @@ export function SQOFFBOARD(sq) {
   return BOOL.FALSE;
 }
 
-const GameBoard = {
+export const GameBoard = {
   pieces: new Array(BRD_SQ_NUM),
   side: COLOURS.WHITE,
   fiftyMove: 0,
