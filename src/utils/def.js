@@ -171,8 +171,8 @@ export const PieceKeys = new Array(14 * 120);
 export const SideKey = [];
 export const CastleKeys = new Array(16);
 
-const Sq120ToSq64 = new Array(BRD_SQ_NUM);
-const Sq64ToSq120 = new Array(64);
+export const Sq120ToSq64 = new Array(BRD_SQ_NUM);
+export const Sq64ToSq120 = new Array(64);
 
 export function RAND_32() {
   return (
