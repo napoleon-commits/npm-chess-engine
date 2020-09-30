@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["|=","^","^=","&"] }] */
 
-import { BOOL, PieceKing, PieceCol, SQUARES, KiDir, GameBoard, PIECES, BiDir, PieceRookQueen, RkDir, PieceBishopQueen, FILES, RANKS, FR2SQ, CASTLEBIT, COLOURS, SQ120, PCEINDEX, PieceKnight, KnDir, PceChar, PieceVal, BRD_SQ_NUM, PieceKeys, SideKey, CastleKeys, RankChar, FileChar } from './defs';
+import { BOOL, PieceKing, PieceCol, SQUARES, KiDir, GameBoard, PIECES, BiDir, PieceRookQueen, RkDir, PieceBishopQueen, FILES, RANKS, FR2SQ, CASTLEBIT, COLOURS, SQ120, PCEINDEX, PieceKnight, KnDir, PceChar, PieceVal, BRD_SQ_NUM, PieceKeys, SideKey, CastleKeys, RankChar, FileChar, SideChar } from './defs';
 
 export function GeneratePosKey() {
   let sq = 0;
