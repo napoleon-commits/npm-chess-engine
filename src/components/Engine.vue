@@ -15,6 +15,8 @@
 
 <script>
 
+import { InitFilesRanksBrd } from '@/utils/engine/main';
+
 export default {
   data() {
     return {
@@ -34,6 +36,7 @@ export default {
     init() {
       // eslint-disable-next-line
       console.log("init() called");
+      InitFilesRanksBrd();
     },
   },
 };
