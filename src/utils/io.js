@@ -1,4 +1,5 @@
 import { PIECES, PROMOTED, BOOL, GameBoard, NOMOVE, COLOURS, FileChar, RankChar, TOSQ, FilesBrd, RanksBrd, FROMSQ, PieceKnight, PieceRookQueen, PieceBishopQueen } from './def';
+import { GenerateMoves } from './movegen';
 
 export function PrSq(sq) {
   return (FileChar[FilesBrd[sq]] + RankChar[RanksBrd[sq]]);

@@ -65,7 +65,7 @@ export const BOOL = { FALSE: 0, TRUE: 1 };
 
 export const MAXGAMEMOVES = 2048;
 const MAXPOSITIONMOVES = 256;
-const MAXDEPTH = 64;
+export const MAXDEPTH = 64;
 export const INFINITE = 30000;
 export const MATE = 29000;
 export const PVENTRIES = 10000;

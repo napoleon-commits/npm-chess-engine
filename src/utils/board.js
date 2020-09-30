@@ -291,7 +291,7 @@ console.log(`fen[fenCnt]:${fen[fenCnt]} File:${file} Rank:${rank}`);
   UpdateListsMaterial();
 }
 
-function SqAttacked(sq, side) {
+export function SqAttacked(sq, side) {
   let pce;
   let tSq;
   let index;
