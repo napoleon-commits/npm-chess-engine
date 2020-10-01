@@ -275,7 +275,7 @@ export function MakeUserMove() {
       MakeMove(parsed);
       PrintBoard();
       MoveGUIPiece(parsed);
-      // CheckAndSet();
+      CheckAndSet();
       // PreSearch();
     }
 
