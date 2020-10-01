@@ -86,6 +86,7 @@ export default {
       } else {
         ClickedPiece(file, rank);
       }
+      this.chessboard = getJ2DBoard();
     },
     init() {
       // eslint-disable-next-line
