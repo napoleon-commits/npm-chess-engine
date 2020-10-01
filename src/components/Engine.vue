@@ -6,7 +6,21 @@
       <button @click="vueSetFen">Set Position</button>
     </div>
     <div>
-      TABLE
+      <table id="chessboard" class="m-auto">
+        <tbody>
+          <tr v-for="(rank, rankIndex) in chessboard" :key="rankIndex">
+            <td
+              v-for="(square, fileIndex) in rank"
+              :key="fileIndex"
+              v-html="getHTMLChessPiece(square)"
+              :class="`
+                ${(((rankIndex+fileIndex)%2)===0)?'bg-white':'dark-square'}
+                ${(chessboard[rankIndex][fileIndex] !== '.')?' c-pointer':''}
+              `"
+            />
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div>
       <span>Thinking Time:</span><br />
@@ -40,12 +54,14 @@ import { ParseFen, PrintBoard } from '@/utils/board';
 import { START_FEN } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
+import { getHTMLChessPiece, getJ2DBoard } from '@/utils/vueboard';
 
 export default {
   data() {
     return {
       fenIn: '',
       thinkingTime: '1',
+      chessboard: [],
     };
   },
   mounted() {
@@ -54,6 +70,7 @@ export default {
     console.log('Main Init Called');
     ParseFen(START_FEN);
     PrintBoard();
+    this.chessboard = getJ2DBoard();
   },
   methods: {
     vueSetFen() {
@@ -70,10 +87,16 @@ export default {
       InitBoardVars();
       InitMvvLva();
     },
+    getHTMLChessPiece,
   },
 };
 </script>
 
 <style>
-
+  .dark-square{
+    background-color: #42b983;
+  }
+  #chessboard{
+    border: 4px solid black;
+  }
 </style>
