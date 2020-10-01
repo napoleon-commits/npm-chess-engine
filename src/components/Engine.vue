@@ -43,12 +43,12 @@
         <option value="10">10s</option>
       </select>
       <br/><br/><br/>
-      <span>BestMove:</span><br />
-      <span>Depth:</span><br />
-      <span>Score:</span><br />
-      <span>Nodes:</span><br />
-      <span>Ordering:</span><br />
-      <span>Time:</span><br />
+      <span>BestMove: {{BestMove}}</span><br />
+      <span>Depth: {{Depth}}</span><br />
+      <span>Score: {{Score}}</span><br />
+      <span>Nodes: {{Nodes}}</span><br />
+      <span>Ordering: {{Ordering}}</span><br />
+      <span>Time: {{Time}}</span><br />
       <button type="button">Move Now</button><br />
       <button type="button">New Game</button><br />
       <button type="button">Flip Board</button><br />
@@ -61,7 +61,7 @@
 <script>
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64, InitBoardVars } from '@/utils/main';
 import { ParseFen, PrintBoard } from '@/utils/board';
-import { START_FEN } from '@/utils/def';
+import { START_FEN, DOMStats } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
 import { getHTMLChessPiece, getJ2DBoard } from '@/utils/vueboard';
@@ -75,6 +75,12 @@ export default {
       chessboard: [],
       rankSelected: null,
       fileSelected: null,
+      Ordering: undefined,
+      Depth: undefined,
+      Score: undefined,
+      Nodes: undefined,
+      Time: undefined,
+      BestMove: undefined,
     };
   },
   mounted() {
@@ -92,11 +98,6 @@ export default {
       SearchPosition();
     },
     vueClickedSquare(file, rank, square, type) {
-      if (square === '.') {
-        ClickedSpace(file, rank, this.thinkingTime);
-      } else {
-        ClickedPiece(file, rank, this.thinkingTime);
-      }
       if (
         this.fileSelected !== null
         || this.rankSelected !== null
@@ -108,6 +109,17 @@ export default {
         this.rankSelected = 7 - rank;
         this.fileSelected = file;
       }
+      if (square === '.') {
+        ClickedSpace(file, rank, this.thinkingTime);
+      } else {
+        ClickedPiece(file, rank, this.thinkingTime);
+      }
+      this.Ordering = DOMStats.Ordering;
+      this.Depth = DOMStats.Depth;
+      this.Score = DOMStats.Score;
+      this.Nodes = DOMStats.Nodes;
+      this.Time = DOMStats.Time;
+      this.BestMove = DOMStats.BestMove;
       this.chessboard = getJ2DBoard();
     },
     init() {

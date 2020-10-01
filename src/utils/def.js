@@ -296,3 +296,12 @@ export const UserMove = {
   from: SQUARES.NO_SQ,
   to: SQUARES.NO_SQ,
 };
+
+export const DOMStats = {
+  Ordering: undefined,
+  Depth: undefined,
+  Score: undefined,
+  Nodes: undefined,
+  Time: undefined,
+  BestMove: undefined,
+};

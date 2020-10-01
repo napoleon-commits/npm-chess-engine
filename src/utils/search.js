@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["&","^"] }] */
 import $ from 'jquery';
-import { INFINITE, BOOL, MATE, MAXDEPTH, NOMOVE, GameBoard, BRD_SQ_NUM, TOSQ, FROMSQ, PCEINDEX, MFLAGCAP, Kings, PVENTRIES } from './def';
+import { INFINITE, BOOL, MATE, MAXDEPTH, NOMOVE, GameBoard, BRD_SQ_NUM, TOSQ, FROMSQ, PCEINDEX, MFLAGCAP, Kings, PVENTRIES, DOMStats } from './def';
 import { GenerateMoves, GenerateCaptures } from './movegen';
 import { SqAttacked } from './board';
 import { MakeMove, TakeMove } from './makemove';
@@ -289,14 +289,12 @@ function UpdateDOMStats(domScore, domDepth) {
     scoreText = `Score: Mate In ${MATE - (Math.abs(domScore)) - 1} moves`;
   }
 
-  return {
-    OrderingOut: `Ordering: ${((SearchController.fhf / SearchController.fh) * 100).toFixed(2)}%`,
-    DepthOut: `Depth: ${domDepth}`,
-    ScoreOut: scoreText,
-    NodesOut: `Nodes: ${SearchController.nodes}`,
-    TimeOut: `Time: ${(($.now() - SearchController.start) / 1000).toFixed(1)}s`,
-    BestOut: `BestMove: ${PrMove(SearchController.best)}`,
-  };
+  DOMStats.Ordering = `${((SearchController.fhf / SearchController.fh) * 100).toFixed(2)}%`;
+  DOMStats.Depth = domDepth;
+  DOMStats.Score = scoreText;
+  DOMStats.Nodes = SearchController.nodes;
+  DOMStats.Time = `${(($.now() - SearchController.start) / 1000).toFixed(1)}s`;
+  DOMStats.BestMove = PrMove(SearchController.best);
 }
 
 export function SearchPosition() {
