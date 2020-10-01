@@ -2,10 +2,10 @@
 
 import { SearchController, SearchPosition } from './search';
 import { MakeMove, TakeMove } from './makemove';
-import { BOOL, GameController, MAXDEPTH, COLOURS, GameBoard, Kings, PCEINDEX, PIECES, SQUARES, FilesBrd, RanksBrd, UserMove, TOSQ, NOMOVE, MFLAGCA, MFLAGEP, PROMOTED, SQ120, START_FEN, CAPTURED } from './def';
+import { BOOL, GameController, MAXDEPTH, COLOURS, GameBoard, Kings, PCEINDEX, PIECES, SQUARES, FilesBrd, RanksBrd, UserMove, TOSQ, MFLAGCA, MFLAGEP, PROMOTED, SQ120, START_FEN, CAPTURED, FR2SQ } from './def';
 import { GenerateMoves } from './movegen';
 import { ParseFen, PrintBoard, SqAttacked } from './board';
-import { PrSq, ParseMove } from './io';
+import { PrSq } from './io';
 
 // $("#SetFen").click(function () {
 // var fenStr = $("#fenIn").val();
@@ -184,61 +184,21 @@ export function SetSqSelected() {
 // } );
 }
 
-export function ClickedSquare(pageX, pageY) {
-  let tPageX = pageX;
-  let tPageY = pageY;
+export function ClickedSquare(file, rank) {
+  const sq = FR2SQ(file, rank);
   // eslint-disable-next-line
-  console.log('ClickedSquare() at ' + tPageX + ',' + tPageY);
-  //   const position = $('#Board').position();
-
-  //   const workedX = Math.floor(position.left);
-  //   const workedY = Math.floor(position.top);
-
-  tPageX = Math.floor(tPageX);
-  tPageY = Math.floor(tPageY);
-
-  //   const file = Math.floor((tPageX - workedX) / 60);
-  //   const rank = 7 - Math.floor((tPageY - workedY) / 60);
-
-  //   const sq = FR2SQ(file, rank);
-
-  //   eslint-disable-next-line
-//   console.log(`Clicked sq:${PrSq(sq)}`);
-
-//   SetSqSelected(sq);
-
-//   return sq;
+  console.log(`Clicked sq:${PrSq(sq)}`);
+  SetSqSelected(sq);
+  return sq;
 }
-
-// $(document).on('click','.Piece', function (e) {
-// console.log('Piece Click');
-
-// if(UserMove.from === SQUARES.NO_SQ) {
-// UserMove.from = ClickedSquare(e.pageX, e.pageY);
-// } else {
-// UserMove.to = ClickedSquare(e.pageX, e.pageY);
-// }
-
-// MakeUserMove();
-
-// });
-
-// $(document).on('click','.Square', function (e) {
-// console.log('Square Click');
-// if(UserMove.from !== SQUARES.NO_SQ) {
-// UserMove.to = ClickedSquare(e.pageX, e.pageY);
-// MakeUserMove();
-// }
-
-// });
 
 function RemoveGUIPiece() {
 
-// $('.Piece').each( function(index) {
-// if(PieceIsOnSq(sq, $(this).position().top, $(this).position().left) === BOOL.TRUE) {
-// $(this).remove();
-// }
-// } );
+  // $('.Piece').each( function(index) {
+  // if(PieceIsOnSq(sq, $(this).position().top, $(this).position().left) === BOOL.TRUE) {
+  // $(this).remove();
+  // }
+  // } );
 
 }
 
@@ -309,15 +269,15 @@ export function MakeUserMove() {
     //   eslint-disable-next-line
     console.log(`User Move:${PrSq(UserMove.from)}${PrSq(UserMove.to)}`);
 
-    const parsed = ParseMove(UserMove.from, UserMove.to);
+    // const parsed = ParseMove(UserMove.from, UserMove.to);
 
-    if (parsed !== NOMOVE) {
-      MakeMove(parsed);
-      PrintBoard();
-      MoveGUIPiece(parsed);
-      CheckAndSet();
-      PreSearch();
-    }
+    // if (parsed !== NOMOVE) {
+    //   MakeMove(parsed);
+    //   PrintBoard();
+    //   MoveGUIPiece(parsed);
+    //   CheckAndSet();
+    //   PreSearch();
+    // }
 
     DeSelectSq(UserMove.from);
     DeSelectSq(UserMove.to);
@@ -326,6 +286,50 @@ export function MakeUserMove() {
     UserMove.to = SQUARES.NO_SQ;
   }
 }
+
+export function ClickedPiece(file, rank) {
+  // eslint-disable-next-line
+  console.log('Piece Click');
+
+  if (UserMove.from === SQUARES.NO_SQ) {
+    UserMove.from = ClickedSquare(file, rank);
+  } else {
+    UserMove.to = ClickedSquare(file, rank);
+  }
+
+  MakeUserMove();
+}
+
+export function ClickedSpace(file, rank) {
+  // eslint-disable-next-line
+  console.log('Square Click');
+  if (UserMove.from !== SQUARES.NO_SQ) {
+    UserMove.to = ClickedSquare(file, rank);
+    MakeUserMove();
+  }
+}
+
+// $(document).on('click','.Piece', function (e) {
+// console.log('Piece Click');
+
+// if(UserMove.from === SQUARES.NO_SQ) {
+// UserMove.from = ClickedSquare(e.pageX, e.pageY);
+// } else {
+// UserMove.to = ClickedSquare(e.pageX, e.pageY);
+// }
+
+// MakeUserMove();
+
+// });
+
+// $(document).on('click','.Square', function (e) {
+// console.log('Square Click');
+// if(UserMove.from !== SQUARES.NO_SQ) {
+// UserMove.to = ClickedSquare(e.pageX, e.pageY);
+// MakeUserMove();
+// }
+
+// });
 
 export function PieceIsOnSq(sq, top, left) {
   if ((RanksBrd[sq] === 7 - Math.round(top / 60)) &&

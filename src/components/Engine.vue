@@ -17,6 +17,7 @@
                 ${(((rankIndex+fileIndex)%2)===0)?'bg-white':'dark-square'}
                 ${(chessboard[rankIndex][fileIndex] !== '.')?' c-pointer':''}
               `"
+              @click="vueClickedSquare(fileIndex, 7 - rankIndex, square)"
             />
           </tr>
         </tbody>
@@ -55,6 +56,7 @@ import { START_FEN } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
 import { getHTMLChessPiece, getJ2DBoard } from '@/utils/vueboard';
+import { ClickedSpace, ClickedPiece } from '@/utils/gui';
 
 export default {
   data() {
@@ -77,6 +79,13 @@ export default {
       ParseFen(this.fenIn);
       PrintBoard();
       SearchPosition();
+    },
+    vueClickedSquare(file, rank, square) {
+      if (square === '.') {
+        ClickedSpace(file, rank);
+      } else {
+        ClickedPiece(file, rank);
+      }
     },
     init() {
       // eslint-disable-next-line
