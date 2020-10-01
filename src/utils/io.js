@@ -17,7 +17,8 @@ function PrMove(move) {
   MvStr = FileChar[ff] + RankChar[rf] + FileChar[ft] + RankChar[rt];
 
   const promoted = PROMOTED(move);
-
+  // eslint-disable-next-line
+  console.log(`promoted = ${promoted}`);
   if (promoted !== PIECES.EMPTY) {
     let pchar = 'q';
     if (PieceKnight[promoted] === BOOL.TRUE) {
@@ -52,9 +53,20 @@ export function PrintMoveList() {
   ) {
     move = GameBoard.moveList[index];
     // eslint-disable-next-line
-    console.log(`IMove:${num}:(${index}):${PrMove(move)} Score:${GameBoard.moveScores[index]}`);
+		console.log('Move:' + num + ':' + PrMove(move));
     num += 1;
   }
+
+  // for (
+  //   index = GameBoard.moveListStart[GameBoard.ply];
+  //   index < GameBoard.moveListStart[GameBoard.ply + 1];
+  //   index += 1
+  // ) {
+  //   move = GameBoard.moveList[index];
+  //   // eslint-disable-next-line
+  //   console.log(`IMove:${num}:(${index}):${PrMove(move)} Score:${GameBoard.moveScores[index]}`);
+  //   num += 1;
+  // }
   // eslint-disable-next-line
   console.log('End MoveList');
 }

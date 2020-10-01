@@ -1,7 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["^=","^"] }] */
 
 import { FILES, MAXGAMEMOVES, Sq120ToSq64, Sq64ToSq120, FR2SQ, RANKS, NOMOVE, PVENTRIES, GameBoard, RAND_32, SQUARES, SideKey, PieceKeys, BRD_SQ_NUM, FilesBrd, RanksBrd, CastleKeys } from './def';
-import { InitMvvLva } from './movegen';
 
 // $(function() {
 // init();
@@ -9,7 +8,7 @@ import { InitMvvLva } from './movegen';
 // NewGame(START_FEN);
 // });
 
-function InitFilesRanksBrd() {
+export function InitFilesRanksBrd() {
   let index = 0;
   let file = FILES.FILE_A;
   let rank = RANKS.RANK_1;
@@ -29,7 +28,7 @@ function InitFilesRanksBrd() {
   }
 }
 
-function InitHashKeys() {
+export function InitHashKeys() {
   let index = 0;
 
   for (index = 0; index < 14 * 120; index += 1) {
@@ -43,7 +42,7 @@ function InitHashKeys() {
   }
 }
 
-function InitSq120To64() {
+export function InitSq120To64() {
   let index = 0;
   let file = FILES.FILE_A;
   let rank = RANKS.RANK_1;
@@ -68,7 +67,7 @@ function InitSq120To64() {
   }
 }
 
-function InitBoardVars() {
+export function InitBoardVars() {
   let index = 0;
   for (index = 0; index < MAXGAMEMOVES; index += 1) {
     GameBoard.history.push({
@@ -88,7 +87,7 @@ function InitBoardVars() {
   }
 }
 
-function InitBoardSquares() {
+export function InitBoardSquares() {
 //   let light = 0;
   //   let rankName;
   //   let fileName;
@@ -137,13 +136,3 @@ function InitBoardSquares() {
 //   }
 // }
 
-export default function init() {
-// eslint-disable-next-line
-console.log("init() called");
-  InitFilesRanksBrd();
-  InitHashKeys();
-  InitSq120To64();
-  InitBoardVars();
-  InitMvvLva();
-  InitBoardSquares();
-}
