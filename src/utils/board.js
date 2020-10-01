@@ -176,7 +176,6 @@ function UpdateListsMaterial() {
       GameBoard.pceNum[piece] += 1;
     }
   }
-  PrintPieceLists();
 }
 
 function ResetBoard() {
@@ -379,5 +378,4 @@ console.log(`fen[fenCnt]:${fen[fenCnt]} File:${file} Rank:${rank}`);
 
   GameBoard.posKey = GeneratePosKey();
   UpdateListsMaterial();
-  PrintSqAttacked();
 }

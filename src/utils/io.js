@@ -6,7 +6,7 @@ export function PrSq(sq) {
   return (FileChar[FilesBrd[sq]] + RankChar[RanksBrd[sq]]);
 }
 
-function PrMove(move) {
+export function PrMove(move) {
   let MvStr;
 
   const ff = FilesBrd[FROMSQ(move)];

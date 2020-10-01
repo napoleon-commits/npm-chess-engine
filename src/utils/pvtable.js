@@ -2,7 +2,7 @@ import { BOOL, GameBoard, NOMOVE, PVENTRIES } from './def';
 import { TakeMove, MakeMove } from './makemove';
 import { MoveExists } from './movegen';
 
-function ProbePvTable() {
+export function ProbePvTable() {
   const index = GameBoard.posKey % PVENTRIES;
 
   if (GameBoard.PvTable[index].posKey === GameBoard.posKey) {

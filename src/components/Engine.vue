@@ -10,7 +10,8 @@
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64, InitBoardVars } from '@/utils/main';
 import { ParseFen, PrintBoard } from '@/utils/board';
 import { START_FEN } from '@/utils/def';
-import PerftTest from '@/utils/perft';
+import { SearchPosition } from '@/utils/search';
+import { InitMvvLva } from '@/utils/movegen';
 
 export default {
   data() {
@@ -29,7 +30,7 @@ export default {
     vueSetFen() {
       ParseFen(this.fenIn);
       PrintBoard();
-      PerftTest(5);
+      SearchPosition();
     },
     init() {
       // eslint-disable-next-line
@@ -38,6 +39,7 @@ export default {
       InitHashKeys();
       InitSq120To64();
       InitBoardVars();
+      InitMvvLva();
     },
   },
 };

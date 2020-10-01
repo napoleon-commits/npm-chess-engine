@@ -6,7 +6,7 @@ import { SqAttacked } from './board';
 import { MakeMove, TakeMove } from './makemove';
 import { PrMove } from './io';
 import { GetPvLine, ProbePvTable, StorePvMove } from './pvtable';
-import { EvalPosition } from './evaluate';
+import EvalPosition from './evaluate';
 
 export const SearchController = {
   nodes: undefined,
