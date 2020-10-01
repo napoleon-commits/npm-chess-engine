@@ -2,10 +2,10 @@
 
 import { SearchController, SearchPosition } from './search';
 import { MakeMove, TakeMove } from './makemove';
-import { BOOL, GameController, MAXDEPTH, COLOURS, GameBoard, Kings, PCEINDEX, PIECES, SQUARES, FilesBrd, RanksBrd, UserMove, TOSQ, MFLAGCA, MFLAGEP, PROMOTED, SQ120, START_FEN, CAPTURED, FR2SQ } from './def';
+import { BOOL, GameController, MAXDEPTH, COLOURS, GameBoard, Kings, PCEINDEX, PIECES, SQUARES, FilesBrd, RanksBrd, UserMove, TOSQ, MFLAGCA, MFLAGEP, PROMOTED, SQ120, START_FEN, CAPTURED, FR2SQ, NOMOVE } from './def';
 import { GenerateMoves } from './movegen';
 import { ParseFen, PrintBoard, SqAttacked } from './board';
-import { PrSq } from './io';
+import { PrSq, ParseMove } from './io';
 
 // $("#SetFen").click(function () {
 // var fenStr = $("#fenIn").val();
@@ -269,15 +269,15 @@ export function MakeUserMove() {
     //   eslint-disable-next-line
     console.log(`User Move:${PrSq(UserMove.from)}${PrSq(UserMove.to)}`);
 
-    // const parsed = ParseMove(UserMove.from, UserMove.to);
+    const parsed = ParseMove(UserMove.from, UserMove.to);
 
-    // if (parsed !== NOMOVE) {
-    //   MakeMove(parsed);
-    //   PrintBoard();
-    //   MoveGUIPiece(parsed);
-    //   CheckAndSet();
-    //   PreSearch();
-    // }
+    if (parsed !== NOMOVE) {
+      MakeMove(parsed);
+      PrintBoard();
+      // MoveGUIPiece(parsed);
+      // CheckAndSet();
+      // PreSearch();
+    }
 
     DeSelectSq(UserMove.from);
     DeSelectSq(UserMove.to);
