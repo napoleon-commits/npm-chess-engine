@@ -12,7 +12,7 @@ import { ParseFen, PrintBoard, PrintPieceLists, CheckBoard } from '@/utils/board
 import { GenerateMoves } from '@/utils/movegen';
 import { PrintMoveList } from '@/utils/io';
 import { START_FEN, GameBoard } from '@/utils/def';
-import { MakeMove } from '@/utils/makemove';
+import { MakeMove, TakeMove } from '@/utils/makemove';
 
 export default {
   data() {
@@ -31,6 +31,9 @@ export default {
     PrintPieceLists();
     CheckBoard();
     MakeMove(GameBoard.moveList[0]);
+    PrintBoard();
+    CheckBoard();
+    TakeMove();
     PrintBoard();
     CheckBoard();
   },
