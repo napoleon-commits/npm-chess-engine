@@ -15,9 +15,18 @@
               v-html="getHTMLChessPiece(square)"
               :class="`
                 ${(((rankIndex+fileIndex)%2)===0)?'bg-white':'dark-square'}
+                ${(
+                    rankIndex === rankSelected
+                    && fileIndex === fileSelected
+                  )?' square-selected':''}
                 ${(chessboard[rankIndex][fileIndex] !== '.')?' c-pointer':''}
               `"
-              @click="vueClickedSquare(fileIndex, 7 - rankIndex, square)"
+              @click="vueClickedSquare(
+                fileIndex,
+                7 - rankIndex,
+                square,
+                `${(chessboard[rankIndex][fileIndex] !== '.')?'Piece':'Square'}`
+              )"
             />
           </tr>
         </tbody>
@@ -64,6 +73,8 @@ export default {
       fenIn: '',
       thinkingTime: '1',
       chessboard: [],
+      rankSelected: null,
+      fileSelected: null,
     };
   },
   mounted() {
@@ -80,11 +91,22 @@ export default {
       PrintBoard();
       SearchPosition();
     },
-    vueClickedSquare(file, rank, square) {
+    vueClickedSquare(file, rank, square, type) {
       if (square === '.') {
         ClickedSpace(file, rank, this.thinkingTime);
       } else {
         ClickedPiece(file, rank, this.thinkingTime);
+      }
+      if (
+        this.fileSelected !== null
+        || this.rankSelected !== null
+        || type === 'Square'
+      ) {
+        this.fileSelected = null;
+        this.rankSelected = null;
+      } else {
+        this.rankSelected = 7 - rank;
+        this.fileSelected = file;
       }
       this.chessboard = getJ2DBoard();
     },
@@ -108,5 +130,8 @@ export default {
   }
   #chessboard{
     border: 4px solid black;
+  }
+  .square-selected{
+    background-color: #6d7a82 !important;
   }
 </style>
