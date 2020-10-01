@@ -8,11 +8,9 @@
 
 <script>
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64, InitBoardVars } from '@/utils/main';
-import { ParseFen, PrintBoard, PrintPieceLists, CheckBoard } from '@/utils/board';
-import { GenerateMoves } from '@/utils/movegen';
-import { PrintMoveList } from '@/utils/io';
-import { START_FEN, GameBoard } from '@/utils/def';
-import { MakeMove, TakeMove } from '@/utils/makemove';
+import { ParseFen, PrintBoard } from '@/utils/board';
+import { START_FEN } from '@/utils/def';
+import PerftTest from '@/utils/perft';
 
 export default {
   data() {
@@ -26,22 +24,12 @@ export default {
     console.log('Main Init Called');
     ParseFen(START_FEN);
     PrintBoard();
-    GenerateMoves();
-    PrintMoveList();
-    PrintPieceLists();
-    CheckBoard();
-    MakeMove(GameBoard.moveList[0]);
-    PrintBoard();
-    CheckBoard();
-    TakeMove();
-    PrintBoard();
-    CheckBoard();
   },
   methods: {
     vueSetFen() {
       ParseFen(this.fenIn);
       PrintBoard();
-      PrintMoveList();
+      PerftTest(5);
     },
     init() {
       // eslint-disable-next-line
