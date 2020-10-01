@@ -7,11 +7,12 @@
 </template>
 
 <script>
-import { InitFilesRanksBrd, InitHashKeys, InitSq120To64 } from '@/utils/main';
-import { ParseFen, PrintBoard } from '@/utils/board';
+import { InitFilesRanksBrd, InitHashKeys, InitSq120To64, InitBoardVars } from '@/utils/main';
+import { ParseFen, PrintBoard, PrintPieceLists, CheckBoard } from '@/utils/board';
 import { GenerateMoves } from '@/utils/movegen';
 import { PrintMoveList } from '@/utils/io';
-import { START_FEN } from '@/utils/def';
+import { START_FEN, GameBoard } from '@/utils/def';
+import { MakeMove } from '@/utils/makemove';
 
 export default {
   data() {
@@ -27,6 +28,11 @@ export default {
     PrintBoard();
     GenerateMoves();
     PrintMoveList();
+    PrintPieceLists();
+    CheckBoard();
+    MakeMove(GameBoard.moveList[0]);
+    PrintBoard();
+    CheckBoard();
   },
   methods: {
     vueSetFen() {
@@ -40,6 +46,7 @@ export default {
       InitFilesRanksBrd();
       InitHashKeys();
       InitSq120To64();
+      InitBoardVars();
     },
   },
 };
