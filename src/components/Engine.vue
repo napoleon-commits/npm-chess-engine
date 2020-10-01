@@ -31,7 +31,7 @@ export default {
   methods: {
     vueSetFen() {
       ParseFen(this.fenIn);
-      PrintBoard();	
+      PrintBoard();
       PrintMoveList();
     },
     init() {
