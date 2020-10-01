@@ -260,7 +260,7 @@ function StartSearch(thinkTimeChoice) {
 function PreSearch(thinkingTime) {
   if (GameController.GameOver === BOOL.FALSE) {
     SearchController.thinking = BOOL.TRUE;
-    setTimeout(() => { StartSearch(thinkingTime); }, 200);
+    StartSearch(thinkingTime);
   }
 }
 
