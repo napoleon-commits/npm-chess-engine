@@ -82,9 +82,9 @@ export default {
     },
     vueClickedSquare(file, rank, square) {
       if (square === '.') {
-        ClickedSpace(file, rank);
+        ClickedSpace(file, rank, this.thinkingTime);
       } else {
-        ClickedPiece(file, rank);
+        ClickedPiece(file, rank, this.thinkingTime);
       }
       this.chessboard = getJ2DBoard();
     },

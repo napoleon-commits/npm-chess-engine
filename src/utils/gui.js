@@ -257,14 +257,14 @@ function StartSearch(thinkTimeChoice) {
   CheckAndSet();
 }
 
-function PreSearch() {
+function PreSearch(thinkingTime) {
   if (GameController.GameOver === BOOL.FALSE) {
     SearchController.thinking = BOOL.TRUE;
-    setTimeout(() => { StartSearch(); }, 200);
+    setTimeout(() => { StartSearch(thinkingTime); }, 200);
   }
 }
 
-export function MakeUserMove() {
+export function MakeUserMove(thinkingTime) {
   if (UserMove.from !== SQUARES.NO_SQ && UserMove.to !== SQUARES.NO_SQ) {
     //   eslint-disable-next-line
     console.log(`User Move:${PrSq(UserMove.from)}${PrSq(UserMove.to)}`);
@@ -276,7 +276,7 @@ export function MakeUserMove() {
       PrintBoard();
       MoveGUIPiece(parsed);
       CheckAndSet();
-      // PreSearch();
+      PreSearch(thinkingTime);
     }
 
     DeSelectSq(UserMove.from);
@@ -287,7 +287,7 @@ export function MakeUserMove() {
   }
 }
 
-export function ClickedPiece(file, rank) {
+export function ClickedPiece(file, rank, thinkingTime) {
   // eslint-disable-next-line
   console.log('Piece Click');
 
@@ -297,15 +297,15 @@ export function ClickedPiece(file, rank) {
     UserMove.to = ClickedSquare(file, rank);
   }
 
-  MakeUserMove();
+  MakeUserMove(thinkingTime);
 }
 
-export function ClickedSpace(file, rank) {
+export function ClickedSpace(file, rank, thinkingTime) {
   // eslint-disable-next-line
   console.log('Square Click');
   if (UserMove.from !== SQUARES.NO_SQ) {
     UserMove.to = ClickedSquare(file, rank);
-    MakeUserMove();
+    MakeUserMove(thinkingTime);
   }
 }
 
@@ -345,7 +345,7 @@ export function PieceIsOnSq(sq, top, left) {
 // PreSearch();
 // });
 
-export function searchButton() {
+export function searchButton(thinkingTime) {
   GameController.PlayerSide = GameController.side ^ 1;
-  PreSearch();
+  PreSearch(thinkingTime);
 }

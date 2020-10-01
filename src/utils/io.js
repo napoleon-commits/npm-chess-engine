@@ -17,8 +17,6 @@ export function PrMove(move) {
   MvStr = FileChar[ff] + RankChar[rf] + FileChar[ft] + RankChar[rt];
 
   const promoted = PROMOTED(move);
-  // eslint-disable-next-line
-  console.log(`promoted = ${promoted}`);
   if (promoted !== PIECES.EMPTY) {
     let pchar = 'q';
     if (PieceKnight[promoted] === BOOL.TRUE) {
