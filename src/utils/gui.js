@@ -133,7 +133,7 @@ function CheckAndSet() {
   }
 }
 
-function NewGame(fenStr) {
+export function NewGame(fenStr) {
   ParseFen(fenStr);
   PrintBoard();
   SetInitialBoardPieces();

@@ -50,8 +50,7 @@
       <span>Ordering: {{Ordering}}</span><br />
       <span>Time: {{Time}}</span><br />
       <button type="button" @click="moveNow">Move Now</button><br />
-      <button type="button">New Game</button><br />
-      <button type="button">Flip Board</button><br />
+      <button type="button" @click="vueNewGame">New Game</button><br />
       <button type="button">Take Back</button><br />
       <span></span>
     </div>
@@ -67,7 +66,7 @@ import { START_FEN, DOMStats, GameController } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
 import { getHTMLChessPiece, get2DBoard } from '@/utils/vueboard';
-import { ClickedSpace, ClickedPiece, PreSearch } from '@/utils/gui';
+import { ClickedSpace, ClickedPiece, PreSearch, NewGame } from '@/utils/gui';
 
 export default {
   data() {
@@ -137,6 +136,10 @@ export default {
     moveNow() {
       GameController.PlayerSide = GameController.side ^ 1;
       PreSearch(this.thinkingTime);
+      this.chessboard = get2DBoard();
+    },
+    vueNewGame(){
+      NewGame(START_FEN);
       this.chessboard = get2DBoard();
     },
   },
