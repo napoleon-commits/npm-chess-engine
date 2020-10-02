@@ -32,27 +32,32 @@
         </tbody>
       </table>
     </div>
-    <div>
-      <span>Thinking Time:</span><br />
-      <select v-model="thinkingTime">
+    <br />
+    <div class="row">
+      <div class="col">
+        <span>Thinking Time:</span><br />
+        <select v-model="thinkingTime">
         <option value="1">1s</option>
         <option value="2">2s</option>
         <option value="4">4s</option>
         <option value="6">6s</option>
         <option value="8">8s</option>
         <option value="10">10s</option>
-      </select>
-      <br/><br/><br/>
-      <span>BestMove: {{BestMove}}</span><br />
-      <span>Depth: {{Depth}}</span><br />
-      <span>Score: {{Score}}</span><br />
-      <span>Nodes: {{Nodes}}</span><br />
-      <span>Ordering: {{Ordering}}</span><br />
-      <span>Time: {{Time}}</span><br />
-      <button type="button" @click="moveNow">Move Now</button><br />
-      <button type="button" @click="vueNewGame">New Game</button><br />
-      <button type="button" @click="vueTakeBack">Take Back</button><br />
-      <span></span>
+        </select>
+      </div>
+      <div class="col">
+        <span>BestMove: {{BestMove}}</span><br />
+        <span>Depth: {{Depth}}</span><br />
+        <span>Score: {{Score}}</span><br />
+        <span>Nodes: {{Nodes}}</span><br />
+        <span>Ordering: {{Ordering}}</span><br />
+        <span>Time: {{Time}}</span><br />
+      </div>
+      <div class="col">
+        <button type="button" @click="moveNow">Move Now</button><br />
+        <button type="button" @click="vueNewGame">New Game</button><br />
+        <button type="button" @click="vueTakeBack">Take Back</button><br />
+      </div>
     </div>
   </div>
 </template>
@@ -138,14 +143,14 @@ export default {
       PreSearch(this.thinkingTime);
       this.chessboard = get2DBoard();
     },
-    vueNewGame(){
+    vueNewGame() {
       NewGame(START_FEN);
       this.chessboard = get2DBoard();
     },
-    vueTakeBack(){
+    vueTakeBack() {
       takeBack();
       this.chessboard = get2DBoard();
-    }
+    },
   },
 };
 </script>
