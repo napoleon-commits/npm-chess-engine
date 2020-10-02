@@ -67,7 +67,7 @@
 
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64, InitBoardVars } from '@/utils/main';
 import { ParseFen, PrintBoard } from '@/utils/board';
-import { START_FEN, DOMStats, GameController } from '@/utils/def';
+import { START_FEN, MoveStats, GameController } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
 import { getHTMLChessPiece, get2DBoard } from '@/utils/vueboard';
@@ -120,12 +120,7 @@ export default {
       } else {
         ClickedPiece(file, rank, this.thinkingTime);
       }
-      this.Ordering = DOMStats.Ordering;
-      this.Depth = DOMStats.Depth;
-      this.Score = DOMStats.Score;
-      this.Nodes = DOMStats.Nodes;
-      this.Time = DOMStats.Time;
-      this.BestMove = DOMStats.BestMove;
+      this.updateMoveStats();
       this.chessboard = get2DBoard();
     },
     init() {
@@ -141,12 +136,7 @@ export default {
     moveNow() {
       GameController.PlayerSide = GameController.side ^ 1;
       PreSearch(this.thinkingTime);
-      this.Ordering = DOMStats.Ordering;
-      this.Depth = DOMStats.Depth;
-      this.Score = DOMStats.Score;
-      this.Nodes = DOMStats.Nodes;
-      this.Time = DOMStats.Time;
-      this.BestMove = DOMStats.BestMove;
+      this.updateMoveStats();
       this.chessboard = get2DBoard();
     },
     vueNewGame() {
@@ -156,6 +146,14 @@ export default {
     vueTakeBack() {
       takeBack();
       this.chessboard = get2DBoard();
+    },
+    updateMoveStats() {
+      this.Ordering = MoveStats.Ordering;
+      this.Depth = MoveStats.Depth;
+      this.Score = MoveStats.Score;
+      this.Nodes = MoveStats.Nodes;
+      this.Time = MoveStats.Time;
+      this.BestMove = MoveStats.BestMove;
     },
   },
 };

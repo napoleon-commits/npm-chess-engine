@@ -297,7 +297,7 @@ export const UserMove = {
   to: SQUARES.NO_SQ,
 };
 
-export const DOMStats = {
+export const MoveStats = {
   Ordering: undefined,
   Depth: undefined,
   Score: undefined,
