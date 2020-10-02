@@ -49,7 +49,7 @@
       <span>Nodes: {{Nodes}}</span><br />
       <span>Ordering: {{Ordering}}</span><br />
       <span>Time: {{Time}}</span><br />
-      <button type="button">Move Now</button><br />
+      <button type="button" @click="moveNow">Move Now</button><br />
       <button type="button">New Game</button><br />
       <button type="button">Flip Board</button><br />
       <button type="button">Take Back</button><br />
@@ -59,13 +59,15 @@
 </template>
 
 <script>
+/* eslint no-bitwise: ["error", { "allow": ["^",] }] */
+
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64, InitBoardVars } from '@/utils/main';
 import { ParseFen, PrintBoard } from '@/utils/board';
-import { START_FEN, DOMStats } from '@/utils/def';
+import { START_FEN, DOMStats, GameController } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
 import { getHTMLChessPiece, getJ2DBoard } from '@/utils/vueboard';
-import { ClickedSpace, ClickedPiece } from '@/utils/gui';
+import { ClickedSpace, ClickedPiece, PreSearch } from '@/utils/gui';
 
 export default {
   data() {
@@ -132,6 +134,11 @@ export default {
       InitMvvLva();
     },
     getHTMLChessPiece,
+    moveNow() {
+      GameController.PlayerSide = GameController.side ^ 1;
+      PreSearch(this.thinkingTime);
+      this.chessboard = getJ2DBoard();
+    },
   },
 };
 </script>
