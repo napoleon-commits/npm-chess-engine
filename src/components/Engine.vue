@@ -141,6 +141,12 @@ export default {
     moveNow() {
       GameController.PlayerSide = GameController.side ^ 1;
       PreSearch(this.thinkingTime);
+      this.Ordering = DOMStats.Ordering;
+      this.Depth = DOMStats.Depth;
+      this.Score = DOMStats.Score;
+      this.Nodes = DOMStats.Nodes;
+      this.Time = DOMStats.Time;
+      this.BestMove = DOMStats.BestMove;
       this.chessboard = get2DBoard();
     },
     vueNewGame() {
