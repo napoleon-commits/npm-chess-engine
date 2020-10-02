@@ -66,7 +66,7 @@ import { ParseFen, PrintBoard } from '@/utils/board';
 import { START_FEN, DOMStats, GameController } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
-import { getHTMLChessPiece, getJ2DBoard } from '@/utils/vueboard';
+import { getHTMLChessPiece, get2DBoard } from '@/utils/vueboard';
 import { ClickedSpace, ClickedPiece, PreSearch } from '@/utils/gui';
 
 export default {
@@ -91,7 +91,7 @@ export default {
     console.log('Main Init Called');
     ParseFen(START_FEN);
     PrintBoard();
-    this.chessboard = getJ2DBoard();
+    this.chessboard = get2DBoard();
   },
   methods: {
     vueSetFen() {
@@ -122,7 +122,7 @@ export default {
       this.Nodes = DOMStats.Nodes;
       this.Time = DOMStats.Time;
       this.BestMove = DOMStats.BestMove;
-      this.chessboard = getJ2DBoard();
+      this.chessboard = get2DBoard();
     },
     init() {
       // eslint-disable-next-line
@@ -137,7 +137,7 @@ export default {
     moveNow() {
       GameController.PlayerSide = GameController.side ^ 1;
       PreSearch(this.thinkingTime);
-      this.chessboard = getJ2DBoard();
+      this.chessboard = get2DBoard();
     },
   },
 };

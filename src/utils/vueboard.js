@@ -62,7 +62,7 @@ export const getHTMLChessPiece = (letter) => {
   );
 };
 
-export const getJ2DBoard = () => {
+export const get2DBoard = () => {
   const JSXBoard = [];
   for (let rank = RANKS.RANK_8; rank >= RANKS.RANK_1; rank -= 1) {
     const row = [];
