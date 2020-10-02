@@ -51,7 +51,7 @@
       <span>Time: {{Time}}</span><br />
       <button type="button" @click="moveNow">Move Now</button><br />
       <button type="button" @click="vueNewGame">New Game</button><br />
-      <button type="button">Take Back</button><br />
+      <button type="button" @click="vueTakeBack">Take Back</button><br />
       <span></span>
     </div>
   </div>
@@ -66,7 +66,7 @@ import { START_FEN, DOMStats, GameController } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
 import { getHTMLChessPiece, get2DBoard } from '@/utils/vueboard';
-import { ClickedSpace, ClickedPiece, PreSearch, NewGame } from '@/utils/gui';
+import { ClickedSpace, ClickedPiece, PreSearch, NewGame, takeBack } from '@/utils/gui';
 
 export default {
   data() {
@@ -142,6 +142,10 @@ export default {
       NewGame(START_FEN);
       this.chessboard = get2DBoard();
     },
+    vueTakeBack(){
+      takeBack();
+      this.chessboard = get2DBoard();
+    }
   },
 };
 </script>

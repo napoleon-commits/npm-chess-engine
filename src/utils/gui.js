@@ -152,7 +152,8 @@ export function setFen(fenStr) {
 // }
 // });
 
-export function takeButton() {
+
+export function takeBack() {
   if (GameBoard.hisPly > 0) {
     TakeMove();
     GameBoard.ply = 0;
