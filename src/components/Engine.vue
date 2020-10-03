@@ -102,6 +102,7 @@ export default {
       ParseFen(this.fenIn);
       PrintBoard();
       SearchPosition();
+      this.chessboard = get2DBoard();
     },
     vueClickedSquare(file, rank, square, type) {
       if (
