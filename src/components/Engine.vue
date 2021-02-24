@@ -58,7 +58,7 @@
         <button type="button" @click="vueNewGame">New Game</button><br />
         <button type="button" @click="vueTakeBack">Take Back</button><br />
         <button type="button" @click="insufficientMaterial">insufficientMaterial</button><br />
-        <!-- <button type="button" @click="vueTakeBack">Take Back</button><br /> -->
+        <button type="button" @click="stalemate">stalemate</button><br />
       </div>
     </div>
   </div>
@@ -164,6 +164,15 @@ export default {
         console.log("GAME DRAWN {insufficient material to mate}");
       } else {
         console.log("Enough material to mate")
+      }
+    },
+    stalemate(){
+      GameController.PlayerSide = GameController.side ^ 1;
+      PreSearch(this.thinkingTime);
+      this.updateMoveStats();
+      this.chessboard = get2DBoard();
+      if(!MoveStats.BestMove){
+        console.log("GAME DRAWN {stalemate}");
       }
     }
   },
