@@ -117,11 +117,13 @@ function CheckResult() {
     }
     //   $("#GameStatus").text("GAME OVER {white mates}");
     return BOOL.TRUE;
+  } else {
+    return BOOL.TRUE;
   }
   // $("#GameStatus").text("GAME DRAWN {stalemate}");return BOOL.TRUE;
 
 
-  return BOOL.FALSE;
+  // return BOOL.FALSE;
 }
 
 function CheckAndSet() {
