@@ -57,6 +57,8 @@
         <button type="button" @click="moveNow">Move Now</button><br />
         <button type="button" @click="vueNewGame">New Game</button><br />
         <button type="button" @click="vueTakeBack">Take Back</button><br />
+        <button type="button" @click="insufficientMaterial">insufficientMaterial</button><br />
+        <!-- <button type="button" @click="vueTakeBack">Take Back</button><br /> -->
       </div>
     </div>
   </div>
@@ -67,11 +69,11 @@
 
 import { InitFilesRanksBrd, InitHashKeys, InitSq120To64, InitBoardVars } from '@/utils/main';
 import { ParseFen, PrintBoard } from '@/utils/board';
-import { START_FEN, MoveStats, GameController } from '@/utils/def';
+import { START_FEN, MoveStats, GameController, BOOL } from '@/utils/def';
 import { SearchPosition } from '@/utils/search';
 import { InitMvvLva } from '@/utils/movegen';
 import { getHTMLChessPiece, get2DBoard } from '@/utils/vueboard';
-import { ClickedSpace, ClickedPiece, PreSearch, NewGame, takeBack } from '@/utils/gui';
+import { ClickedSpace, ClickedPiece, PreSearch, NewGame, takeBack, DrawMaterial } from '@/utils/gui';
 
 export default {
   data() {
@@ -156,6 +158,14 @@ export default {
       this.Time = MoveStats.Time;
       this.BestMove = MoveStats.BestMove;
     },
+    insufficientMaterial(){
+      // console.log("!@#");
+      if (DrawMaterial() === BOOL.TRUE) {
+        console.log("GAME DRAWN {insufficient material to mate}");
+      } else {
+        console.log("Enough material to mate")
+      }
+    }
   },
 };
 </script>
